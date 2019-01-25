@@ -1,0 +1,199 @@
+
+// img {
+// 	width: 100%;
+// 	height: auto;
+// }
+
+button {
+	border: 1px solid transparent;
+  outline: none;
+  background-color: transparent;
+}
+
+.label {
+    font-weight: 700;
+    color: $black60;
+    margin: 24px 0 12px 0;
+  }
+
+.btn {
+	position: relative;
+	font-size: 1rem;
+	line-height: 1.5;
+	cursor: pointer;
+  font-family: $family-primary;
+  border-radius: 5px;
+
+  &--block {
+    font-size: $font-medium;
+    padding: 6px 12px;
+  }
+  &--small {
+    font-size: $font-medium;
+    padding: 8px 18px;
+  }
+  &--medium {
+    font-size: $font-size;
+    padding: 12px 24px;
+  }
+
+  &--large {
+    font-size: 18px;
+    padding: 15px 30px;
+  }
+
+  &.primary {
+    background-color: $primary50;
+    color: $white;
+    font-weight: 600;
+    box-shadow: $box-shadow;
+    transition: background-color .3s ease;
+
+    &:hover {
+      background-color: darken($primary50, 10%);
+    }
+  }
+
+  &.secondary {
+    background-color: $white;
+    color: $primary50;
+    font-weight: 600;
+    border: 1px solid $primary50;
+    transition: background-color .3s ease, color .3s ease;
+
+    &:hover {
+      background-color: darken($primary50, 10%);
+      color: $white;
+    }
+  }
+
+  &.tertiary {
+    background-color: transparent;
+    color: $black50;
+    font-weight: 600;
+    border: 1px solid $black40;
+    transition: border .3s ease, color .3s ease, background-color .3s ease,;
+
+    &:hover {
+      border: 1px solid $black80;
+      color: $black80;
+      background-color: $primary10;
+    }
+  }
+
+  &.large {
+    width: 300px;
+  }
+}
+
+.form__group {
+  margin-bottom: 24px;
+
+  .form__group-label {
+    display: flex;
+    justify-content: space-between;
+
+    label {
+      font-size: $font-medium;
+      color: $black80;
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .required {
+      font-size: $font-medium;
+      color: $primary50;
+    }
+  }
+  
+
+  .error {
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+
+
+input[type='text'],
+input[type='email'],
+input[type='number'],
+select,
+textarea {
+	padding: 10px 12px;
+  border: 1px solid rgba(220,220,240,1);
+  border-radius: 4px;
+  outline:none;
+  width: 100%;
+  transition: border .3s ease;
+  margin-bottom: 4px;
+  font-size: $font-size;
+  font-family: $family-primary;
+  color: $black60;
+  
+  &.small {
+    padding: 5px 12px;
+  }
+  &:focus {
+      border: 1px solid $black80;
+  }
+}
+
+
+textarea {
+	padding: .75rem;
+	min-height: 150px;
+}
+
+
+
+/* Hide the browser's default radio button */
+
+.container-radio input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+}
+
+/* Create a custom radio button */
+
+.checkmark-radio {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	height: 16px;
+	width: 16px;
+	background-color: #eee;
+	border-radius: 50%;
+	border: 2px solid rgb(93, 107, 119);
+	transform: translateY(-50%);
+}
+
+.container-radio:hover input~.checkmark-radio {
+	background-color: #ccc;
+}
+
+.container-radio input:checked~.checkmark-radio {
+	background-color: #2196F3;
+}
+
+.checkmark-radio:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+.container-radio input:checked~.checkmark-radio:after {
+	display: none;
+}
+
+.container-radio .checkmark-radio:after {
+	top: 2px;
+	left: 2px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}

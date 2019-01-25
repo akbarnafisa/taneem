@@ -1,0 +1,67 @@
+<template>
+  <svg
+    id="Capa_1"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    :width="width"
+    :height="height"
+    viewBox="0 0 199.404 199.404"
+    style="enable-background:new 0 0 199.404 199.404;"
+    :style="style"
+    xml:space="preserve"
+  >
+    <polygon
+      points="135.412,0 35.709,99.702 135.412,199.404 163.695,171.119 92.277,99.702 163.695,28.285 	"
+    ></polygon>
+  </svg>
+
+  <!-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path
+      d="M3.97487 6.01148H12.8329C13.1425 6.01148 13.4393 6.14914 13.6582 6.39417C13.877 6.63919 14 6.97152 14 7.31805C14 7.66457 13.877 7.9969 13.6582 8.24193C13.4393 8.48695 13.1425 8.62461 12.8329 8.62461H3.97487L6.65913 11.6297C6.7805 11.7478 6.87875 11.8927 6.94773 12.0554C7.0167 12.218 7.05491 12.3949 7.05995 12.5748C7.06499 12.7548 7.03675 12.9339 6.97702 13.1011C6.91728 13.2682 6.82734 13.4198 6.71282 13.5462C6.5983 13.6726 6.46169 13.7711 6.31154 13.8356C6.1614 13.9001 6.00097 13.9292 5.84033 13.921C5.67968 13.9128 5.52227 13.8675 5.37799 13.788C5.23371 13.7085 5.10567 13.5964 5.00189 13.4589L0.333615 8.23264C0.119777 7.98841 0 7.66004 0 7.31805C0 6.97605 0.119777 6.64769 0.333615 6.40345L5.00189 1.17719C5.22378 0.961247 5.5103 0.847014 5.80416 0.857332C6.09802 0.86765 6.37758 1.00176 6.58695 1.23285C6.79631 1.46393 6.92005 1.77497 6.93344 2.10378C6.94682 2.43259 6.84886 2.75494 6.65913 3.00638L3.9632 6.01148H3.97487Z"
+      fill="#D31212"
+    ></path>
+  </svg>-->
+</template>
+
+<script>
+export default {
+  props: {
+    direction: {
+      type: String,
+      required: true
+    },
+    width: {
+      type: String,
+      default: "14px"
+    },
+    height: {
+      type: String,
+      default: "14px"
+    },
+    color: {
+      type: String,
+      default: "black"
+    }
+  },
+  computed: {
+    style() {
+      let style = "";
+      if (this.direction === "right") {
+        style = style + "transform: rotate(180deg);";
+      } else if (this.direction === "down") {
+        style = style + "transform: rotate(-90deg);";
+      }
+      if (this.color) {
+        style = style + `fill: ${this.color};`;
+      }
+      return style;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+</style>

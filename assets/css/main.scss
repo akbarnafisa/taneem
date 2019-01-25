@@ -1,0 +1,149 @@
+$mobile: 576px !default; // used for max-width only
+
+// mobile-first breakpoints (min-width: $x)
+$mobile-large: 577px !default;
+$tablet: 768px !default;
+$desktop: 1024px !default;
+$widescreen: 1200px !default;
+$fullhd: 1392px !default;
+
+@import './variables';
+
+
+html,
+body {
+  font-family: $family-primary;
+  font-size: $font-size;
+  background-color: $white;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  transition: all 1s ease-in-out;
+  // font-size: responsive 14px 21px; /* min-size, max-size */
+  // font-range: 480px 1280px; /* viewport widths between which font-size is fluid */
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  text-shadow:  transparent 0 0 0, rgba(0,0,0,.68) 0 0 0 ;
+}
+
+@import './layout';
+@import './elements';
+@import './typography';
+
+
+.flex-justify {
+  display: flex;
+  justify-content: center;
+}
+.flex-items {
+  display: flex;
+  align-items: center;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fz-14 {
+  font-size: 14px;
+}
+
+.fz-12 {
+  font-size: 14px;
+}
+
+.btn--block {
+  max-width: 500px;
+}
+
+.mw-1 {
+  max-width: 320px;
+}
+.mw-2 {
+  max-width: 540px;
+}
+.mw-3 {
+  max-width: 720px;
+}
+.mw-4 {
+  max-width: 960px;
+}
+.mw-5 {
+  max-width: 1140px;
+}
+
+
+.text-shadow {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.77);
+}
+
+.blog__content img {
+  max-width: 100%;
+  width: initial;
+}
+
+::placeholder {
+  line-height: 1.5;
+  opacity: 0.75;
+}
+
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+  opacity: 1;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+}
+
+
+.page-enter, .page-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+
+.content {
+  p {
+
+    @include media(sm) {
+      font-size: 16px;
+    }
+
+    @include media(md) {
+      font-size: 18px;
+    }
+
+    img {
+      margin: 24px 0;
+    }
+  }
+}
+
+.section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+
+  @include media(sm) {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  @include media(md) {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+
+
+
