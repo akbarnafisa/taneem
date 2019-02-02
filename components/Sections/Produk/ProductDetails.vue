@@ -3,7 +3,7 @@
     <div class="col-lg-6 product__slider">
       <carousel :data="product.images" type="product"/>
     </div>
-    <div class="product__desc col-lg-6">
+    <div id="top" class="product__desc col-lg-6">
       <div class="product__title">Tane'em - {{product.name}}</div>
 
       <div class="product__price">
@@ -18,8 +18,18 @@
           >{{countDiscount(product.fromDiscount, product.price)}}</span>-->
         </span>
       </div>
-      <product-color :colors="product.colors"/>
-      <product-sizes :sizes="product.sizes"/>
+      <product-color
+        @handleInput="handleInput($event)"
+        :error="error"
+        :selected="order.color"
+        :colors="product.colors"
+      />
+      <product-sizes
+        @handleInput="handleInput($event)"
+        :error="error"
+        :selected="order.size"
+        :sizes="product.sizes"
+      />
 
       <div class="product__plus">
         <div class="label">Keunggulan</div>
@@ -37,15 +47,19 @@
         </div>
       </div>
 
-      <product-quantity :stock="product.stock"/>
+      <product-quantity
+        @handleInput="handleInput($event)"
+        :quantity="order.quantity"
+        :stock="product.stock"
+      />
 
       <div class="product__button">
-        <button class="btn btn--medium primary">Beli Ecer</button>
+        <button @click="addToCart" class="btn btn--medium primary addToCart">Beli Ecer</button>
         <button class="btn btn--medium secondary">Beli Seri</button>
       </div>
       <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div>
       <share-social :title="product.name"/>
-      <p class="product__desc mt-7">{{product.desc}}</p>
+      <div class="product__desc mt-7" v-html="product.desc"></div>
     </div>
   </div>
 </template>
@@ -70,6 +84,54 @@ export default {
     product: {
       required: true,
       type: Object
+    }
+  },
+  data() {
+    return {
+      submited: false,
+      error: false
+    };
+  },
+  created() {
+    this.resetOrder();
+  },
+  methods: {
+    resetOrder() {
+      this.$store.commit("order/REMOVE_NEWORDER");
+    },
+    handleInput(data) {
+      this.$store.commit("order/SET_NEWORDER", data);
+    },
+    addToCart() {
+      this.error = false;
+      this.$store
+        .dispatch("order/ADD_ORDER", {
+          _id: this.product._id,
+          name: this.product.name,
+          image: this.product.images[0],
+          price: this.product.price,
+          fromDiscount: this.product.fromDiscount,
+          stock: this.product.stock,
+          color: this.order.color,
+          size: this.order.size,
+          quantity: this.order.quantity
+        })
+        .catch(err => {
+          this.error = true;
+          this.scroll();
+        });
+    },
+    scroll() {
+      const element = document.querySelector("#top").offsetTop;
+      window.scroll({
+        top: element - 50,
+        behavior: "smooth"
+      });
+    }
+  },
+  computed: {
+    order() {
+      return this.$store.state.order.newOrder;
     }
   }
 };

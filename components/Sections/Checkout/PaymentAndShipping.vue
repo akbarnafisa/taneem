@@ -1,25 +1,20 @@
 <template>
   <div class="costumer">
     <div class="header">Pengiriman dan Pembayaran</div>
-    <div class="wrapper d-flex flex-wrap justify-content-between">
+    <form @input="handleInput" class="wrapper d-flex flex-wrap justify-content-between">
       <div class="costumer__courier form__group">
         <div class="form__group-label">
           <label>Kurir Pengiriman</label>
           <div class="required">*Wajib</div>
         </div>
         <label class="form__radio">
-          <input type="radio" name="courier" value="JNE REG"> JNE REG Rp. 54.000
+          <input type="radio" name="courier" value="JNE REG" :checked="data.courier === 'JNE REG'"> JNE REG Rp. 54.000
         </label>
-        <label class="form__radio">
-          <input type="radio" name="courier" value="JNE REG"> JNE REG Rp. 54.000
-        </label>
-        <label class="form__radio">
-          <input type="radio" name="courier" value="JNE REG"> JNE REG Rp. 54.000
-        </label>
-        <label class="form__radio">
-          <input type="radio" name="courier" value="JNE REG"> JNE REG Rp. 54.000
-        </label>
-        <span class="error"></span>
+        <span
+          v-if="finalError.courier"
+          class="error"
+          :class="finalError.courier ? 'errorShake' : null"
+        >Masukan alamat provinsi</span>
       </div>
       <div class="costumer__payment form__group">
         <div class="form__group-label">
@@ -30,12 +25,52 @@
         </label>
         <span class="error"></span>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    data: {
+      required: true,
+      type: Object
+    },
+    error: {
+      required: true,
+      type: Object
+    },
+    submited: {
+      required: true,
+      type: Boolean
+    }
+  },
+  data() {
+    return {
+      courierClicked: false
+    };
+  },
+  methods: {
+    handleInput(e) {
+      const key = e.target.name;
+      const value = e.target.value;
+      this.courierClicked = true;
+      this.$emit("handleInput", {
+        key,
+        value
+      });
+    }
+  },
+  computed: {
+    finalError() {
+      return {
+        courier:
+          (this.error.courier && this.courierClicked) ||
+          (this.error.name && this.submited)
+      };
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

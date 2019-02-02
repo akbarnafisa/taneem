@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 70px;
+  height: 60px;
   border-bottom: 1px solid $black10;
   background-color: $white;
   position: fixed;
@@ -71,6 +71,17 @@ export default {
     }
 
     &.nuxt-link-exact-active {
+      .menu__number {
+        border: 2px solid $primary50;
+        color: $primary50;
+      }
+
+      .menu__text {
+        color: $primary50;
+      }
+    }
+
+    &.nuxt-link-active {
       .menu__number {
         border: 2px solid $primary50;
         color: $primary50;

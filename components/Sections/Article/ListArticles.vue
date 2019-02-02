@@ -11,13 +11,13 @@
         <div :style="`backgroundImage: url('${article.thumbnail}')`" class="card__image"/>
       </div>
       <p class="card__title mt-4 fw-500">{{ article.title }}</p>
-      <p class="card__desc">{{article.content.slice(0,100)}}...</p>
+      <p class="card__desc">{{article.desc.slice(0,100)}}...</p>
       <!-- <nuxt-link :to="article.link" class="mt-6">
         <BaseButton text="View More" type="small"/>
       </nuxt-link>-->
     </nuxt-link>
     <div v-if="articlesPage" class="flex-center w-100 mt-5">
-      <nuxt-link class="btn btn--medium secondary" to="/artikel">Seluruh Artikel</nuxt-link>
+      <nuxt-link class="btn btn--medium primary" to="/artikel">Seluruh Artikel</nuxt-link>
     </div>
   </div>
 </template>

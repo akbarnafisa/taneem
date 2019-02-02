@@ -38,7 +38,7 @@ export default {
       return getLinks.map(link => {
         link === "" ? (path = "/") : (path = `${path}${link}/`);
         return {
-          name: link === "" ? "home" : link,
+          name: link === "" ? "home" : link.replace(/\-/g, " "),
           path
         };
       });

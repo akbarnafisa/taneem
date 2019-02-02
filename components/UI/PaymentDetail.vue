@@ -8,7 +8,7 @@
     >Rincian Belanja</div>
     <div v-if="$route.name.includes('checkout')" class="payment__id">
       <span class="paymentId">ID Pembayaran</span>
-      <span class="id">wn6xh0d1w_</span>
+      <span class="id">{{paymentId}}</span>
     </div>
     <div class="payment__subtotal">
       <span class="title">Subtotal</span>
@@ -20,7 +20,7 @@
     </div>
     <div class="payment__shipping">
       <span class="title">Biaya Kirim</span>
-      <span class="price">Rp. {{(payment.shipment).toLocaleString('id') }}</span>
+      <span class="price">Rp. {{(payment.ongkir).toLocaleString('id') }}</span>
     </div>
     <div class="payment__total">
       <span class="title">Total</span>
@@ -28,7 +28,12 @@
     </div>
     <span v-if="type !== 'checkout-review'">
       <div class="notes">*belum termasih biaya kirim</div>
-      <nuxt-link :to="page.link" class="btn btn--medium primary w-100 flex-justify">{{page.button}}</nuxt-link>
+      <slot/>
+      <nuxt-link
+        @click.native="handleClick"
+        :to="page.link"
+        class="btn btn--medium primary w-100 flex-justify"
+      >{{page.button}}</nuxt-link>
     </span>
   </div>
 </template>
@@ -37,20 +42,28 @@
 <script>
 export default {
   props: {
-    payment: {
-      required: true,
-      type: Object
-    },
     type: {
       type: String,
       default: "default"
+    }
+  },
+  data() {
+    return {
+      route: this.$route.name
+    };
+  },
+  methods: {
+    handleClick() {
+      if (this.route === "cart") {
+        this.$store.commit("order/ADD_PAYMENT_ID");
+      }
     }
   },
   computed: {
     page() {
       if (this.$route.name.includes("address-and-payment")) {
         return {
-          link: "/checkout/review",
+          link: "/checkout/address-and-payment",
           button: "Selanjutnya"
         };
       }
@@ -58,6 +71,12 @@ export default {
         link: "/checkout/address-and-payment",
         button: "Lanjut ke Pembayaran"
       };
+    },
+    payment() {
+      return this.$store.state.order.payment;
+    },
+    paymentId() {
+      return this.$store.state.order.paymentId;
     }
   }
 };
@@ -65,15 +84,11 @@ export default {
 
 <style lang="scss" scoped>
 .payment {
-  padding: 0 16px 16px 16px;
-
   .header {
-    font-size: 18px;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-    font-weight: 700;
-    color: $black60;
+    font-size: 24px;
     border-bottom: 1px solid $black10;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
 
     &--review {
       font-weight: 500;

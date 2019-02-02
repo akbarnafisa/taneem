@@ -1,10 +1,14 @@
 <template>
-  <div class="container section pt-0 mw-3">
+  <div class="container section-header mw-3 px-2">
     <no-ssr>
-      <payment-detail class="p-0" type="checkout-review" :payment="paymentDetails"/>
-      <final-costumer-data class="mt-7"/>
-      <cart-item class="mt-7" type="checkout-page" :data="items"/>
-      <final-payment class="mt-7"/>
+      <payment-detail class="p-0 section-white box-shadow p-3 p-sm-4" type="checkout-review"/>
+      <final-costumer-data class="mt-5 section-white box-shadow p-3 p-sm-4"/>
+      <cart-item
+        class="mt-5 section-white box-shadow p-3 p-sm-4"
+        type="checkout-page"
+        :data="items"
+      />
+      <final-payment class="mt-5 section-white box-shadow p-3 p-sm-4"/>
     </no-ssr>
   </div>
 </template>
@@ -23,41 +27,16 @@ export default {
     PaymentDetail,
     CartItem
   },
+  created() {
+    this.$store.commit("order/LOAD_COSTUMER");
+  },
   data() {
-    return {
-      items: [
-        {
-          _id: "gg",
-          name: "18113",
-          color: "Aqua",
-          size: "S",
-          quantity: 1,
-          image: ["/images/produk3.jpg"],
-          price: 130000,
-          fromDiscount: 150000,
-          stock: 20,
-          quantity: 1
-        },
-        {
-          _id: "wp",
-          name: "18113",
-          color: "Aqua",
-          size: "S",
-          quantity: 1,
-          image: ["/images/produk3.jpg"],
-          price: 130000,
-          fromDiscount: 150000,
-          stock: 20,
-          quantity: 1
-        }
-      ],
-      paymentDetails: {
-        subtotal: 300000,
-        discount: 40000,
-        shipment: 0,
-        total: 260000
-      }
-    };
+    return {};
+  },
+  computed: {
+    items() {
+      return this.$store.state.order.items;
+    }
   }
 };
 </script>

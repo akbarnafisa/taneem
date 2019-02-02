@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <transition name="fadeCarousel" mode="out-in">
     <img
       v-if="type === 'product'"
       v-show="currIndex === dataId"
@@ -9,15 +9,15 @@
       style="width: 100%;"
       @dblclick="openNewTab(data.image)"
     >
-    <img
-      v-else
-      v-show="currIndex === dataId"
-      :src="`${data.image}`"
-      class="sliderItem__home"
-      alt="Taneem Products"
-      style="width: 100%"
-      @dblclick="openNewTab(data.image)"
-    >
+    <nuxt-link v-else v-show="currIndex === dataId" :to="data.link">
+      <img
+        :src="`${data.image}`"
+        class="sliderItem__home"
+        alt="Taneem Products"
+        style="width: 100%"
+        @dblclick="openNewTab(data.image)"
+      >
+    </nuxt-link>
   </transition>
 </template>
 
@@ -29,10 +29,16 @@ export default {
     currIndex: { type: Number, default: 0 },
     dataId: { type: Number, default: 0 }
   },
+  mounted() {},
   computed: {
     windowWidth() {
       return this.$store.getters.windowWidth;
     }
+  },
+  data() {
+    return {
+      heightImage: 0
+    };
   },
   methods: {
     openNewTab(value) {
@@ -73,14 +79,15 @@ export default {
   transform: translate3d(-50%, 0, 0);
 }
 
-.fade-enter-active {
+.fadeCarousel-enter-active {
   transition: opacity 1s ease;
 }
 
-.fade-leave-active {
+.fadeCarousel-leave-active {
   transition: opacity 0.25s ease;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fadeCarousel-enter,
+.fadeCarousel-leave-to {
   opacity: 0;
 }
 </style>

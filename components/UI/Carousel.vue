@@ -13,11 +13,9 @@
         :curr-index="currIndex"
         :key="index"
         :type="type"
-        :class="type === 'product' ? 'pointer' : 'container p-0'"
         @click.native="$emit('modalActive', currIndex)"
       />
     </div>
-
     <button
       v-if="type !== 'product'"
       name="slider"
@@ -40,18 +38,17 @@
         <arrow direction="right"/>
       </div>
     </button>
-
-    <div v-if="type === 'product'">
-      <div v-for="(item, index) in data" :key="index" class="slider__imageIndicator">
-        <img
-          :class="currIndex === index ? 'active' : null"
-          :src="item"
-          class="pointer"
-          title="Opposite Products"
-          alt="Opposite Products"
-          @mouseover="indicatorClick(index)"
-        >
-      </div>
+    <div v-if="type === 'product'" class="imageSlider-left">
+      <img
+        v-for="(item, index) in data"
+        :key="index"
+        :class="currIndex === index ? 'active' : null"
+        :src="item"
+        class="pointer"
+        title="Opposite Products"
+        alt="Opposite Products"
+        @mouseover="indicatorClick(index)"
+      >
     </div>
     <div v-else class="flex-items slider__indicator">
       <div
@@ -72,6 +69,7 @@ import carouselSlider from "./CarouselSlider";
 import arrow from "../Icon/arrow";
 import { setTimeout, setInterval } from "timers";
 export default {
+  name: "Carousel",
   components: {
     carouselSlider,
     arrow
@@ -96,10 +94,10 @@ export default {
     const self = this;
 
     setInterval(() => {
-      if (!self.hover) {
-        // self.slideRight();
+      if (!self.hover && self.type === "home") {
+        self.slideRight();
       }
-    }, 4000);
+    }, 5000);
   },
   destroyed() {
     this.swipeDestroyer();
@@ -187,23 +185,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.imageSlider-left::-webkit-scrollbar {
+  width: 4px;
+}
+.imageSlider-left::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.imageSlider-left::-webkit-scrollbar-thumb {
+  background-color: $black50;
+  border-radius: 5px;
+}
+
 #slider {
   touch-action: manipulation;
-
-  .slider__imageIndicator {
-    margin-right: 12px;
-    margin-bottom: 8px;
-    display: flex;
-    flex-direction: column;
+  .imageSlider-left {
     width: 50px;
-    background: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding-bottom: 121%;
-    position: relative;
-
+    margin-right: 12px;
+    max-height: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
     @include media(sm) {
-      width: 60px;
-      margin-bottom: 12px;
+      width: 80px;
+      max-height: 486px;
+    }
+
+    @include media(md) {
+      max-height: 615px;
+    }
+
+    @include media(lg) {
+      max-height: 552px;
+    }
+
+    @include media(xl) {
+      max-height: 683px;
     }
 
     img {
@@ -211,9 +227,6 @@ export default {
       border: 1px solid white;
       transition: border 0.3s ease;
       cursor: pointer;
-      position: absolute;
-      top: 0;
-      left: 0;
 
       &.active {
         border: 1px solid $black80;
@@ -224,6 +237,34 @@ export default {
       }
     }
   }
+  // .slider__imageIndicator {
+  //   width: 100%;
+  //   margin-bottom: 8px;
+  //   display: flex;
+  //   flex-direction: column;
+  //   background: white;
+  //   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  //   padding-bottom: 121%;
+  //   position: relative;
+
+  //   img {
+  //     width: 100%;
+  //     border: 1px solid white;
+  //     transition: border 0.3s ease;
+  //     cursor: pointer;
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+
+  //     &.active {
+  //       border: 1px solid $black80;
+  //     }
+
+  //     &:hover {
+  //       border: 1px solid $black80;
+  //     }
+  //   }
+  // }
 
   .slider__indicator {
     position: absolute;

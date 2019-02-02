@@ -1,10 +1,23 @@
 <template>
-  <div class="container cart">
-    <h4 class="underline-header h4-sm">Keranjang Belanja</h4>
-    <div class="mt-7 row section pt-0">
-      <cart-item class="col-lg-8 mb-5 pr-lg-7" :data="items"/>
-      <payment-details type="cart" class="section col-lg-4" :payment="paymentDetails"/>
-    </div>
+  <div class="container cart section-header px-2">
+    <no-ssr>
+      <div class="pt-5 text-center" v-if="items === null || items.length === 0">
+        <div class="svg mb-7"></div>
+        <p class="mb-4">Keranjang Belanja Anda Masih Kosong</p>
+        <nuxt-link to="/produk" class="btn btn--medium primary">Belanja Sekarang</nuxt-link>
+      </div>
+      <span v-else>
+        <h4 class="underline-header h4-sm">Keranjang Belanja</h4>
+        <div class="row section pt-0">
+          <div class="col-lg-8">
+            <cart-item class="mt-5 section-white box-shadow p-3 p-sm-4" :data="items"/>
+          </div>
+          <div class="col-lg-4 mt-2">
+            <payment-details type="cart" class="mt-7 px-2"/>
+          </div>
+        </div>
+      </span>
+    </no-ssr>
   </div>
 </template>
 
@@ -17,44 +30,27 @@ export default {
     PaymentDetails
   },
   data() {
-    return {
-      items: [
-        {
-          _id: "gg",
-          name: "18113",
-          color: "Aqua",
-          size: "S",
-          quantity: 1,
-          image: ["/images/produk3.jpg"],
-          price: 130000,
-          fromDiscount: 150000,
-          stock: 20
-        },
-        {
-          _id: "wp",
-          name: "18113",
-          color: "Aqua",
-          size: "S",
-          quantity: 1,
-          image: ["/images/produk3.jpg"],
-          price: 130000,
-          fromDiscount: 150000,
-          stock: 20
-        }
-      ],
-      paymentDetails: {
-        subtotal: 300000,
-        discount: 40000,
-        shipment: 0,
-        total: 260000
-      }
-    };
+    return {};
+  },
+  computed: {
+    items() {
+      return this.$store.state.order.items;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .cart {
+  .svg {
+    width: 100%;
+    height: 50vw;
+    max-height: 300px;
+    background-image: url(/svg/empty.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
   .underline-header {
     border-bottom: 4px solid $primary50;
     display: inline;

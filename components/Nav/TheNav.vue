@@ -10,16 +10,21 @@
           :to="link.to"
           aria-label="navigation"
         >{{link.name}}</nuxt-link>
-        <nuxt-link class="cart-wrapper flex-items" to="/cart" aria-label="navigation">
-          <div class="menu menu--cart px-3"/>
-          <div class="cart__count">0</div>
-        </nuxt-link>
+        <nav-cart type="desktop">
+          <template class="pointer" slot-scope="slotProps">
+            <nuxt-link class="cart-wrapper flex-items" to="/cart" aria-label="navigation">
+              <div class="menu menu--cart px-3"/>
+              <div class="cart__count">{{slotProps.cartItems}}</div>
+            </nuxt-link>
+          </template>
+        </nav-cart>
       </div>
     </nav>
   </div>
 </template>
 
 <script>
+import NavCart from "./NavCart";
 export default {
   data() {
     return {
@@ -42,13 +47,21 @@ export default {
         }
       ]
     };
+  },
+  components: {
+    NavCart
+  },
+  computed: {
+    category() {
+      return this.$store.state.products.listCategory;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .navbar {
-  height: 60px;
+  height: 65px;
   border-bottom: 1px solid $black10;
   background-color: $white;
   position: fixed;
@@ -79,7 +92,7 @@ export default {
         width: 100%;
         background-color: $primary50;
         position: absolute;
-        bottom: -20px;
+        bottom: -23px;
         left: 0;
       }
     }
@@ -102,6 +115,14 @@ export default {
         color: $primary50;
       }
     }
+  }
+
+  .navigation__product {
+    height: 50px;
+    background: $white;
+    position: relative;
+    top: 1px;
+    border-bottom: 1px solid $black10;
   }
 }
 </style>

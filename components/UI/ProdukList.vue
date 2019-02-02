@@ -1,6 +1,9 @@
 <template>
-  <div class="product__wrapper mt-5 mt-md-7">
-    <p>
+  <div class="product__wrapper">
+    <div v-if="type === 'page-home'" class="flex-center">
+      <h4 class="fw-700 h3-sm">{{header.replace(/\-/g, " ")}}</h4>
+    </div>
+    <p v-else class="mt-5 mt-md-7">
       Menampilkan
       <span class="strong">{{data.length}} Produk</span>
     </p>
@@ -9,10 +12,13 @@
         v-for="(product, index) in data"
         :key="product.name + index + index"
         :to="`/produk/taneem-${product.name}`"
-        class="product__item col-lg-3 col-sm-4 col-6 mb-lg-7 mb-5"
+        class="product__item col-lg-3 col-md-4 col-6 mb-lg-7 mb-5"
       >
         <div class="product__image-wrapper">
           <img class="product__image" :src="product.image">
+          <!-- <div v-if="product.new !== undefined || product.new " class="product__new">
+            <span>Baru</span>
+          </div> -->
         </div>
         <div class="product__name">Tane'em - {{product.name}}</div>
         <div class="product__price">Rp. {{(product.price).toLocaleString('id') }}</div>
@@ -24,15 +30,39 @@
         </div>
       </nuxt-link>
     </div>
+    <div v-if="type === 'page-home'" class="flex-center">
+      <nuxt-link
+        class="btn btn--large primary large flex-center"
+        :to="`/collections/${link}`"
+      >Selengkapnya
+        <arrow class="ml-3" color="#fff" width="12px" height="12px" direction="right"/>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
 <script>
+import arrow from "@/components/Icon/arrow";
 export default {
   props: {
     data: {
       required: true,
       type: Array
+    },
+    type: {
+      type: String,
+      default: "page-product"
+    },
+    header: {
+      type: String
+    }
+  },
+  components: {
+    arrow
+  },
+  computed: {
+    link() {
+      return this.header.toLowerCase().replace(/\s/g, "-");
     }
   }
 };
@@ -40,6 +70,11 @@ export default {
 
 <style lang="scss" scoped>
 .product__wrapper {
+  h4 {
+    border-bottom: 4px solid $primary50;
+    color: $black80;
+    text-transform: capitalize;
+  }
   p {
     text-align: center;
 
@@ -72,6 +107,38 @@ export default {
           position: absolute;
           top: 0;
           left: 0;
+          z-index: 1;
+        }
+
+        .product__new {
+          font-size: 10px;
+          line-height: 1.5882;
+          background: darken($primary10, 10%);
+          display: table;
+          left: 0;
+          letter-spacing: 0.03em;
+          line-height: 1.1;
+          padding: 0 3em 0.75em;
+          position: absolute;
+          top: 0;
+          transform: translateX(-50%) rotate(-45deg);
+          transform-origin: 50% 0;
+          vertical-align: bottom;
+          z-index: 2;
+
+          @include media(sm) {
+            font-size: 12px;
+          }
+
+          @include media(md) {
+            font-size: 14px;
+          }
+
+          span {
+            display: table-cell;
+            height: 3.5em;
+            vertical-align: bottom;
+          }
         }
       }
 

@@ -1,151 +1,56 @@
 <template>
-  <div class="container product">
-    <breadcrumbs/>
-    <div class="product__header">
-      <h5 class="underline-header h4-sm mb-0">Seluruh Produk</h5>
-      <div class="product__view mt-5 mt-md-0">
-        <produk-filter/>
-        <produk-sort/>
-      </div>
+  <div>
+    <div class="section-white">
+      <section class="container">
+        <breadcrumbs class="section pb-0"/>
+
+        <produk-list
+          v-for="(category, index, key) in CategoryProduct"
+          :key="index"
+          class="section"
+          :class="key == 0 ? 'pt-0' : null"
+          type="page-home"
+          :header="index"
+          :data="category.slice(0,8)"
+        />
+        <produk-list
+          class="section pt-0"
+          type="page-home"
+          header="Seluruh Produk"
+          :data="AllProduct.slice(0,8)"
+        />
+      </section>
     </div>
-    <produk-list :data="Products"/>
   </div>
 </template>
 
 <script>
 import Breadcrumbs from "@/components/UI/Breadcrumbs";
-import ProdukFilter from "@/components/Sections/Produk/ProdukFilter";
-import ProdukSort from "@/components/Sections/Produk/ProdukSort";
-import ProdukList from "@/components/Sections/Produk/ProdukList";
+import ProdukList from "@/components/UI/ProdukList";
 export default {
+  name: "home",
   components: {
-    Breadcrumbs,
-    ProdukSort,
-    ProdukFilter,
-    ProdukList
+    ProdukList,
+    Breadcrumbs
+  },
+  async asyncData({ store }) {
+    if (store.state.products.allProducts === null) {
+      await store.dispatch("products/FETCH_PRODUCT");
+    }
   },
   data() {
-    return {
-      Products: [
-        {
-          id: "123335123",
-          image: "/images/produk3.jpg",
-          link: "/",
-          name: "18113",
-          price: 130000,
-          fromDiscount: 0
-        },
-        {
-          id: "1233sdas3",
-          image: "/images/produk1.jpg",
-          link: "/",
-          name: "18114",
-          price: 120000,
-          fromDiscount: 130000
-        },
-        {
-          id: "123asd3sd3zxczxc",
-          image: "/images/produk2.jpg",
-          link: "/",
-          name: "18115",
-          price: 100000,
-          fromDiscount: 130000
-        },
-        {
-          id: "1233sd35123",
-          image: "/images/produk5.jpg",
-          link: "/",
-          name: "18116",
-          price: 110000,
-          fromDiscount: 130000
-        },
-        {
-          id: "1233sdasdas3",
-          image: "/images/produk4.jpg",
-          link: "/",
-          name: "18117",
-          price: 110000,
-          fromDiscount: 130000
-        },
-        {
-          id: "123asd3sasdd3zxczxc",
-          image: "/images/produk2.jpg",
-          link: "/",
-          name: "18118",
-          price: 100000,
-          fromDiscount: 0
-        },
-        {
-          id: "123335123",
-          image: "/images/produk3.jpg",
-          link: "/",
-          name: "18113",
-          price: 130000,
-          fromDiscount: 0
-        },
-        {
-          id: "1233sdas3",
-          image: "/images/produk1.jpg",
-          link: "/",
-          name: "18114",
-          price: 120000,
-          fromDiscount: 130000
-        },
-        {
-          id: "123asd3sd3zxczxc",
-          image: "/images/produk2.jpg",
-          link: "/",
-          name: "18115",
-          price: 100000,
-          fromDiscount: 130000
-        },
-        {
-          id: "1233sd35123",
-          image: "/images/produk5.jpg",
-          link: "/",
-          name: "18116",
-          price: 110000,
-          fromDiscount: 130000
-        },
-        {
-          id: "1233sdasdas3",
-          image: "/images/produk4.jpg",
-          link: "/",
-          name: "18117",
-          price: 110000,
-          fromDiscount: 130000
-        },
-        {
-          id: "123asd3sasdd3zxczxc",
-          image: "/images/produk2.jpg",
-          link: "/",
-          name: "18118",
-          price: 100000,
-          fromDiscount: 0
-        }
-      ]
-    };
+    return {};
+  },
+  computed: {
+    AllProduct() {
+      return this.$store.state.products.allProducts;
+    },
+    CategoryProduct() {
+      return this.$store.state.products.category;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.product {
-  .product__header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    .underline-header {
-      border-bottom: 4px solid $primary40;
-    }
-    .product__view {
-      width: 100%;
-      max-width: 464px;
-      display: flex;
-      align-items: center;
-    }
-  }
-}
 </style>

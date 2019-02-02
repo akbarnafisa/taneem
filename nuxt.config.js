@@ -1,3 +1,4 @@
+require('dotenv').config()
 const pkg = require('./package')
 
 
@@ -38,6 +39,8 @@ module.exports = {
   */
   plugins: [
     { src: '~/plugins/nuxt-swiper.js', ssr: false },
+    { src: '~/plugins/vue-localstorage.js', ssr: false },
+    // { src: '~/plugins/vuelidate.js', ssr: true },
   ],
 
   /*
@@ -45,15 +48,19 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    '@nuxtjs/dotenv',
+    // '@nuxtjs/axios',
     ['nuxt-sass-resources-loader', '~/assets/css/variables.scss']
   ],
+  router: {
+    middleware: ['route'],
+  },
   /*
   ** Axios module configuration
   */
-  axios: {
-    // See https://github.com/nuxt-community/axios-module#options
-  },
+  // axios: {
+  //   // See https://github.com/nuxt-community/axios-module#options
+  // },
 
   /*
   ** Build configuration

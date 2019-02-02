@@ -1,14 +1,23 @@
 <template>
   <div class="produk__sortir">
     <div class="label">Urutkan</div>
-    <button
+    <select @change="changeHandler">
+      <option disabled value>Please select one</option>
+      <option
+        v-for="(sort) in sorts"
+        :value="sort"
+        :key="sort"
+        :selected="sortSelected === sort"
+      >{{sort}}</option>
+    </select>
+    <!-- <button
       name="sortir"
       @click="click()"
       class="produk__inputclik noSelect mt-2 pointer flex-items justify-content-between"
     >
-      <span class="textOverflow fz-12">{{sortirActive}}</span>
+      <span class="textOverflow fz-12">{{sortSelected}}</span>
       <dropdown-icon/>
-    </button>
+    </button>-->
   </div>
 </template>
 
@@ -18,17 +27,17 @@ export default {
   components: {
     dropdownIcon
   },
-  props: {
-    sortirActive: {
-      required: true,
-      type: String,
-      default: "Termurah"
+  methods: {
+    changeHandler($event) {
+      this.$store.commit("products/SET_SORT", $event.target.value);
     }
   },
-  methods: {
-    click() {
-      this.$router.push(this.$route.path + "#sortirButton");
-      this.$emit("modalSortir");
+  computed: {
+    sortSelected() {
+      return this.$store.state.products.sortSelected;
+    },
+    sorts() {
+      return this.$store.state.products.sort;
     }
   }
 };
@@ -36,7 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 .produk__sortir {
-  width: 45%;
+  width: 100%;
 
   .textOverflow {
     text-overflow: ellipsis;
@@ -50,14 +59,9 @@ export default {
     color: $black60;
   }
 
-  .produk__inputclik {
-    width: 100%;
-    padding: 6px 10px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+  select {
     transition: border 0.3s ease;
-    border-radius: 5px;
     cursor: pointer;
-    font-family: $family-primary;
 
     &:hover {
       border: 1px solid rgba(0, 0, 0, 1);

@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <informations :informations="informations"/>
+  <div class="section-white">
+    <div class="section-header">
+      <informations :informations="informations">
+        <breadcrumbs/>
+      </informations>
+    </div>
   </div>
 </template>
 
 <script>
+import Breadcrumbs from "@/components/UI/Breadcrumbs";
 import Informations from "@/components/Sections/Informations/Informations";
 export default {
   components: {
-    Informations
+    Informations,
+    Breadcrumbs
   },
   data() {
     return {

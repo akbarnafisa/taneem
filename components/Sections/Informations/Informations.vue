@@ -1,5 +1,6 @@
 <template>
   <div class="information container section pt-0 mw-3">
+    <slot/>
     <h4 class="underline-header h4-sm mb-0">Informasi</h4>
     <input
       placeholder="Tulis pertanyaan atau kata kunci yang ingin kamu cari"

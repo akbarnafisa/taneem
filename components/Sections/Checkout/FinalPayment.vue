@@ -3,7 +3,11 @@
     <div class="header">Pembayaran</div>
     <div class="wrapper">
       <h5 class="fw-600">Transfer Bank</h5>
-      <p>Pembayaran dapat di lakukan ke salah satu rekening taneem berikut</p>
+      <p>
+        Bila Pembayaran tidak dilakukan dalam waktu
+        <b>24 jam</b>, pemesanan anda akan otomatis
+        <b>dibatalkan</b>. Pembayaran dapat di lakukan ke salah satu rekening taneem berikut
+      </p>
       <div class="d-flex">
         <img src="/mandiri.png" alt="mandiri">
         <div class="ml-4">
@@ -23,13 +27,13 @@
           <div class="mb-3 col-md-6">
             <h5 class="fw-700">
               ID Pembayaran:
-              <b>wn6xh0d1w_</b>
+              <b>{{paymentId}}</b>
             </h5>
           </div>
           <div class="mb-3 col-md-6">
             <h5 class="fw-700">
               Total Pembayaran:
-              <b>Rp. 260.000</b>
+              <b>Rp. {{(totalPayment).toLocaleString('id') }}</b>
             </h5>
           </div>
         </div>
@@ -37,7 +41,7 @@
         <p>
           Harap melakukan
           <b>konfirmasi pembayaran</b> dengan mengirimkan
-          <b>bukti transfer, ID Pembayaran dan nama pengirim</b> melalui kontak Craftiserrie berikut:
+          <b>bukti transfer, ID Pembayaran dan nama pengirim sebelum 24 jam</b> melalui kontak Taneem berikut:
         </p>
         <div class="m-2">
           <b>Facebook</b>: Taneem
@@ -51,13 +55,30 @@
       </div>
     </div>
     <div class="flex-center">
-      <button class="btn btn--medium primary w-100 mx-auto mt-5 mw-2">Proses Transaksi</button>
+      <button
+        @click="handleSubmit"
+        class="btn btn--medium primary w-100 mx-auto mt-5 mw-2"
+      >Proses Transaksi</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    paymentId() {
+      return this.$store.state.order.paymentId;
+    },
+    totalPayment() {
+      return this.$store.state.order.payment.total;
+    }
+  },
+  methods: {
+    handleSubmit() {
+      this.$store.dispatch("order/SUBMIT_ORDER");
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

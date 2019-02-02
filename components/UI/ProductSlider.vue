@@ -16,6 +16,9 @@
         >
           <div class="product__image-wrapper">
             <img class="product__image" :src="product.image">
+            <!-- <div v-if="product.new !== undefined || product.new " class="product__new">
+              <span>Baru</span>
+            </div>-->
           </div>
           <div class="product__name">Tane'em - {{product.name}}</div>
           <div class="product__price">Rp. {{(product.price).toLocaleString('id') }}</div>
@@ -39,11 +42,6 @@ export default {
       type: Array,
       required: true
     },
-    autoplay: {
-      type: Boolean,
-      required: true,
-      default: true
-    },
     header: {
       type: String,
       required: true
@@ -60,19 +58,7 @@ export default {
     return {
       swiperOption: {
         slidesPerView: "auto",
-        spaceBetween: 16,
-        autoplay: {
-          delay: this.autoplay ? 3000 : 9000000000000,
-          disableOnInteraction: false
-        },
-        on: {
-          slideChange() {
-            console.log("onSlideChangeEnd", this);
-          },
-          tap() {
-            console.log("onTap", this);
-          }
-        }
+        spaceBetween: 16
       }
     };
   },
@@ -118,11 +104,43 @@ export default {
       width: 235px;
       height: 350px;
     }
+
     .product__image {
       width: 100%;
       position: absolute;
       top: 0;
       left: 0;
+    }
+
+    .product__new {
+      font-size: 10px;
+      line-height: 1.5882;
+      background: darken($primary10, 10%);
+      display: table;
+      left: 0;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      padding: 0 3em 0.75em;
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%) rotate(-45deg);
+      transform-origin: 50% 0;
+      vertical-align: bottom;
+      z-index: 2;
+
+      @include media(sm) {
+        font-size: 12px;
+      }
+
+      @include media(md) {
+        font-size: 14px;
+      }
+
+      span {
+        display: table-cell;
+        height: 3.5em;
+        vertical-align: bottom;
+      }
     }
   }
 

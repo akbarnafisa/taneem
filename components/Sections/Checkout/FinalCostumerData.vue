@@ -6,25 +6,31 @@
         <h5 class="fw-600">Alamat Pengiriman
           <nuxt-link to="/checkout/address-and-payment">Ubah</nuxt-link>
         </h5>
-        <div class="costumer__name">Akbar Nafisa Ja'far</div>
-        <div
+        <div class="costumer__name">{{costumer.name}}</div>
+        <p
           class="costumer__address"
-        >Gamping Kidul RT 02 / RW 019, Ambarketawang, Gamping, YO, Sleman , Indonesia</div>
-        <div class="costumer__phone">081213348502</div>
-        <div class="costumer__email">akbarnj788@gmail.com</div>
+        >{{costumer.address}}, {{costumer.city}}, {{costumer.province}}, Indonesia</p>
+        <div class="costumer__phone">{{costumer.handphone}}</div>
+        <div class="costumer__email">{{costumer.email}}</div>
       </div>
       <div class="costumer__shipping col-md-6">
         <h5 class="fw-600">Pengiriman
-          <nuxt-link to="/checkout/address-and-payment">Ubah</nuxt-link>
+          <nuxt-link to="/checkout/address-and-payment#pengiriman">Ubah</nuxt-link>
         </h5>
-        <div class="costumer__courier">JNE REG Rp. 54.000</div>
+        <div class="costumer__courier">{{costumer.courier}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    costumer() {
+      return { ...this.$store.state.order.dataCostumer };
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
