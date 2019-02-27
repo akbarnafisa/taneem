@@ -2,8 +2,8 @@
   <div>
     <div class="section-white">
       <div class="container section pb-5 pb-md-7">
-        <breadcrumbs/>
-        <product-details :product="product"/>
+        <breadcrumbs />
+        <product-details :product="product" />
       </div>
     </div>
 
@@ -36,20 +36,20 @@ export default {
     ProductSlider,
     ProductDetails
   },
-  async asyncData({ store, route }) {
-    if (store.state.products.allProducts === null) {
-      await store.dispatch("products/FETCH_PRODUCT");
+  async asyncData ({ store, route }) {
+    if (store.state.products.listCategory === null) {
+      await store.dispatch("products/FETCH_CATEGORY");
     }
     const id = route.params.id.split("-")[1];
     return {
       product: store.getters["products/GET_PRODUCT"](id)
     };
   },
-  data() {
+  data () {
     return {};
   },
   computed: {
-    Products() {
+    Products () {
       const products = this.$store.state.products.allProducts;
       return this.product.nextData
         .map(v => {

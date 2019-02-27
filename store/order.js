@@ -16,6 +16,7 @@ export const state = () => ({
     ongkir: 0,
     total: 0
   },
+  courierData: [],
   dataCostumer: {
     name: null,
     handphone: null,
@@ -31,20 +32,20 @@ export const state = () => ({
 })
 
 export const mutations = {
-  SET_NEWORDER(state, payload) {
+  SET_NEWORDER (state, payload) {
     state.newOrder = {
       ...state.newOrder,
       [payload.key]: payload.value
     }
   },
-  REMOVE_NEWORDER(state) {
+  REMOVE_NEWORDER (state) {
     state.newOrder = {
       color: null,
       size: null,
       quantity: 1
     }
   },
-  LOAD_CART(state) {
+  LOAD_CART (state) {
     if (process.browser) {
       const data = JSON.parse(window.localStorage.getItem('cartItems'))
       if (data && data.length > 0) {
@@ -52,7 +53,7 @@ export const mutations = {
       }
     }
   },
-  ADD_CART(state, payload) {
+  ADD_CART (state, payload) {
     let duplicate = false
     if (state.items.length > 0) {
       state.items.forEach((item) => {
@@ -70,25 +71,26 @@ export const mutations = {
     }
     window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
-  EDIT_CART(state, payload) {
+  EDIT_CART (state, payload) {
+
     const data = {
       ...state.items[payload.index],
       [payload.key]: payload.value
     }
-
-    // state.items[payload.index][payload.key] = payload.value;
     Vue.set(state.items, payload.index, data)
     window.localStorage.setItem('cartItems', JSON.stringify(state.items))
+
+    // state.items[payload.index][payload.key] = payload.value;
   },
-  REMOVE_CART(state, payload) {
+  REMOVE_CART (state, payload) {
     state.items = state.items.filter((item, index) => index !== payload)
     window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
-  EMPTY_CART(state) {
+  EMPTY_CART (state) {
     state.items = []
     window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
-  SET_PAYMENT(state) {
+  SET_PAYMENT (state) {
     let subtotal, totalDiscount, discount
     subtotal = totalDiscount = discount = 0
     const ongkir = 0
@@ -105,20 +107,29 @@ export const mutations = {
       total: subtotal - discount
     }
   },
-  LOAD_COSTUMER(state, payload) {
+  SET_ONGKIR (state, payload) {
+    state.payment = {
+      ...state.payment,
+      ongkir: payload
+    }
+  },
+  SET_COURIER (state, payload) {
+    state.courierData = payload
+  },
+  LOAD_COSTUMER (state, payload) {
     if (process.browser) {
       const data = window.localStorage.getItem('dataCostumer')
       state.dataCostumer = JSON.parse(data)
     }
   },
-  EDIT_COSTUMER(state, payload) {
+  EDIT_COSTUMER (state, payload) {
     state.dataCostumer = {
       ...state.dataCostumer,
       [payload.key]: payload.value
     }
     window.localStorage.setItem('dataCostumer', JSON.stringify(state.dataCostumer))
   },
-  REMOVE_COSTUMER(state) {
+  REMOVE_COSTUMER (state) {
     state.dataCostumer = {
       name: null,
       handphone: null,
@@ -130,23 +141,23 @@ export const mutations = {
       paymentMethods: 'Transfer Bank'
     }
   },
-  ADD_PAYMENT_ID(state) {
+  ADD_PAYMENT_ID (state) {
     const idPayment =
       Math.random()
         .toString(36)
         .substr(2, 5) + '_'
     Vue.set(state, 'paymentId', idPayment)
   },
-  REMOVE_PAYMENT_ID(state) {
+  REMOVE_PAYMENT_ID (state) {
     state.paymentId = null
   },
-  SET_MODAL_PAYMENT(state, payload) {
+  SET_MODAL_PAYMENT (state, payload) {
     state.modalPayment = payload
   }
 }
 
 export const actions = {
-  ADD_ORDER({ state, commit }, payload) {
+  ADD_ORDER ({ state, commit }, payload) {
     return new Promise((resolve, reject) => {
       if (state.newOrder.size === null || state.newOrder.color === null) {
         reject(new Error('data not complete'))
@@ -158,19 +169,19 @@ export const actions = {
       }
     })
   },
-  EDIT_ORDER({ commit }, payload) {
+  EDIT_ORDER ({ commit }, payload) {
     commit('EDIT_CART', payload)
     commit('SET_PAYMENT')
   },
-  REMOVE_ORDER({ commit }, payload) {
+  REMOVE_ORDER ({ commit }, payload) {
     commit('REMOVE_CART', payload)
     commit('SET_PAYMENT')
   },
-  LOAD_CART({ commit }, payload) {
+  LOAD_CART ({ commit }, payload) {
     commit('LOAD_CART')
     commit('SET_PAYMENT')
   },
-  SUBMIT_ORDER({ state, commit }) {
+  SUBMIT_ORDER ({ state, commit }) {
     const costumer = {
       ...state.dataCostumer,
       ...state.payment,

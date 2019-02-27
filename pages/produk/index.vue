@@ -2,7 +2,7 @@
   <div>
     <div class="section-white">
       <section class="container">
-        <breadcrumbs class="section pb-0"/>
+        <breadcrumbs class="section pb-0" />
 
         <produk-list
           v-for="(category, index, key) in CategoryProduct"
@@ -33,19 +33,19 @@ export default {
     ProdukList,
     Breadcrumbs
   },
-  async asyncData({ store }) {
-    if (store.state.products.allProducts === null) {
-      await store.dispatch("products/FETCH_PRODUCT");
+  async asyncData ({ store }) {
+    if (store.state.products.listCategory === null) {
+      await store.dispatch("products/FETCH_CATEGORY");
     }
   },
-  data() {
+  data () {
     return {};
   },
   computed: {
-    AllProduct() {
-      return this.$store.state.products.allProducts;
+    AllProduct () {
+      return this.$store.state.products.allProducts.slice(0, 8);
     },
-    CategoryProduct() {
+    CategoryProduct () {
       return this.$store.state.products.category;
     }
   }

@@ -2,7 +2,7 @@
   <div class="costumer">
     <div class="header">Data Pembeli</div>
     <no-ssr>
-      <form @input="handleInput">
+      <form @change="handleInput">
         <div class="d-flex flex-wrap justify-content-between">
           <div class="costumer__name form__group">
             <div class="form__group-label">
@@ -49,7 +49,12 @@
           <div class="form__group-label">
             <label>Email</label>
           </div>
-          <input id="email" :value="data.email" placeholder="Email Anda" type="email">
+          <input
+            id="email"
+            :value="data.email"
+            placeholder="Email Anda"
+            type="email"
+          >
         </div>
 
         <div class="costumer__address form__group">
@@ -78,14 +83,30 @@
               <label>Provinsi Tujuan</label>
               <div class="required">*Wajib</div>
             </div>
-            <input
+            <!-- <input
               id="province"
               @blur="provinceClicked = true"
               :value="data.province"
               :class="finalError.province ? 'error' : null"
               placeholder="Pilih Provinsi"
               type="text"
-            >
+            > -->
+            <select 
+              id="province"
+              @blur="provinceClicked = true"
+              v-model="selectedProvince"
+              @change="getCity($event)"
+              :class="finalError.province ? 'error' : null"
+              >
+              <option disabled value="" >Pilih Pronvinsi</option>
+              <option 
+                v-for="(value,index) in provinceData"
+                :key="index"
+                :value="value"
+              >
+                {{value.province}}
+              </option>
+            </select>
             <span
               v-if="finalError.province"
               class="error"
@@ -97,14 +118,30 @@
               <label>Kabupaten Tujuan</label>
               <div class="required">*Wajib</div>
             </div>
-            <input
+            <!-- <input
               id="city"
               @blur="cityClicked = true"
               :value="data.city"
               :class="finalError.city ? 'error' : null"
               placeholder="Pilih Kabupaten"
               type="text"
-            >
+            > -->
+            <select 
+              id="city"
+              @blur="cityClicked = true"
+              @change="getCost"
+              v-model="selectedCity"
+              :class="finalError.province ? 'error' : null"
+              >
+              <option disabled value="" >Pilih Kabupaten</option>
+              <option 
+                v-for="(value,index) in cityData"
+                :key="index"
+                :value="value"
+              >
+                {{value.city_name}}
+              </option>
+            </select>
             <span
               v-if="finalError.city"
               class="error"
@@ -118,6 +155,7 @@
 </template>
 
 <script>
+import { ContentService } from '~/utils/api.service'
 export default {
   props: {
     data: {
@@ -135,34 +173,105 @@ export default {
   },
   directives: {
     focus: {
-      inserted(el) {
+      inserted (el) {
         if (el.value.trim() === "") {
           el.focus();
         }
       }
     }
   },
-  data() {
+  created () {
+    this.getProvince()
+  },
+  mounted () {
+    this.setData();
+
+    if (this.selectedProvince) {
+      this.getCity();
+    }
+    if (this.selectedCity) {
+      this.getCost();
+    }
+  },
+  data () {
     return {
+      selectedProvince: null,
+      selectedCity: null,
       nameClicked: false,
       handphoneClicked: false,
       addressClicked: false,
       provinceClicked: false,
-      cityClicked: false
+      cityClicked: false,
+      provinceData: [],
+      cityData: []
     };
   },
   methods: {
-    handleInput(e) {
+    setData () {
+      this.selectedProvince = this.data.province;
+      this.selectedCity = this.data.city;
+    },
+    handleInput (e) {
       const key = e.target.id;
-      const value = e.target.value;
+      let value = e.target.value;
+      if (key === 'province') {
+        value = this.selectedProvince
+      } else if (key === 'city') {
+        value = this.selectedCity
+      }
       this.$emit("handleInput", {
         key,
         value
       });
+    },
+    getProvince () {
+      if (this.selectedCity) {
+        this.$store.commit('order/EDIT_COSTUMER', {
+          key: 'city',
+          value: null
+        })
+        this.$store.commit('order/EDIT_COSTUMER', {
+          key: 'courier',
+          value: null
+        })
+      }
+      ContentService.getDestination('get', 'province').then(res => {
+        this.provinceData = res.data.rajaongkir.results
+      });
+
+    },
+    getCity () {
+      if (this.$store.state.order.courierData) {
+        this.$store.commit('order/SET_COURIER', null)
+        this.$store.commit('order/EDIT_COSTUMER', {
+          key: 'courier',
+          value: null
+        })
+      }
+      ContentService.getDestination('get', 'city', {
+        province: this.selectedProvince.province_id
+      }).then(res => {
+        this.cityData = res.data.rajaongkir.results
+      });
+    },
+    getCost (value) {
+      this.$store.commit('order/EDIT_COSTUMER', {
+        key: 'courier',
+        value: null
+      })
+      ContentService.getDestination('post', 'cost', {
+        origin: 501,
+        destination: this.selectedCity.city_id,
+        weight: 1000,
+        courier: 'jne'
+      }).then(res => {
+        const data = res.data.rajaongkir.results[0].costs
+        this.$store.commit('order/SET_COURIER', data)
+      })
     }
   },
   computed: {
-    finalError() {
+    finalError () {
       return {
         name:
           (this.error.name && this.nameClicked) ||
@@ -205,7 +314,10 @@ export default {
   .costumer__province,
   .costumer__email {
     width: 100%;
-    max-width: 327px;
+    max-width: 315px;
+    @include media(lg) {
+      max-width: 327px;
+    }
   }
 }
 </style>

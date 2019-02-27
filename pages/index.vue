@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="container section-header">
-      <home-slider :data="homeSliderData"/>
+      <home-slider :data="homeSliderData" />
     </section>
     <div class="section-white">
       <section class="container">
@@ -31,27 +31,26 @@ export default {
     HomeSlider,
     ProdukList
   },
-  async asyncData({ store }) {
+  async asyncData ({ store }) {
     if (store.state.home.sliders === null) {
       await store.dispatch("home/FETCH_SLIDER");
     }
     if (store.state.products.listCategory === null) {
-      console.log("gg");
       await store.dispatch("products/FETCH_CATEGORY");
     }
   },
-  data() {
+  data () {
     return {};
   },
   computed: {
-    homeSliderData() {
+    homeSliderData () {
       return this.$store.state.home.sliders;
     },
-    SelectionProduct() {
-      return this.$store.state.products.category["produk-pilihan"];
+    SelectionProduct () {
+      return this.$store.state.products.category["produk-pilihan"].slice(0, 8);
     },
-    BestSellerProduct() {
-      return this.$store.state.products.category["best-seller"];
+    BestSellerProduct () {
+      return this.$store.state.products.category["best-seller"].slice(0, 8);
     }
   }
 };

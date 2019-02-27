@@ -2,27 +2,32 @@ import axios from 'axios'
 import tus from 'tus-js-client'
 
 const BaseUrl = `https://${process.env.PROJECTID}.evius.id/api/`
+const rajaOngkir = 'http://rajaongkir.apps.evius.id/'
 const writeApi = `Bearer ${process.env.WRITE}`
 const readApi = `Bearer ${process.env.READ}`
-
 const ApiService = {
 
-  get(url, qs) {
+  get (url, qs) {
     return axios.get(`${BaseUrl}${url}${qs}`, {
       headers: {
         authorization: readApi
       }
     })
   },
-
-  post(url, data) {
+  getDestination (type, url, qs) {
+    if (type === 'get') {
+      return axios.get(`${rajaOngkir}${url}${qs}`)
+    }
+    return axios.post(`${rajaOngkir}${url}`, qs)
+  },
+  post (url, data) {
     return axios.post(`${BaseUrl}${url}`, data, {
       headers: {
         authorization: writeApi
       }
     })
   },
-  upload(file) {
+  upload (file) {
     return new Promise((resolve, reject) => {
       const upload = new tus.Upload(file, {
         endpoint: `https://${process.env.PROJECTID}.evius.id/media/upload`,
@@ -37,7 +42,7 @@ const ApiService = {
         headers: {
           authorization: writeApi
         },
-        onError(err) {
+        onError (err) {
           if (err.originalRequest) {
             if (window.confirm(`Failed because: ${err}\nDo you want to retry?`)) {
               upload.start()
@@ -47,9 +52,9 @@ const ApiService = {
             reject(err)
           }
         },
-        onProgress(bytesUploaded, bytesTotal) {
+        onProgress (bytesUploaded, bytesTotal) {
         },
-        onSuccess() {
+        onSuccess () {
           const url = upload.url.split('/upload')
           const extension = upload.file.type.includes('image') ? upload.file.type.split('/')[1] : upload.file.type
           // thumbnail =  [
@@ -78,13 +83,30 @@ const ApiService = {
 export default ApiService
 
 export const ContentService = {
-  get(ContentId, qs = '') {
+  get (ContentId, qs = '') {
+    if (qs) {
+      let query = '?'
+      Object.keys(qs).forEach(key => {
+        query = `${query}${key}=${qs[key]}`
+      })
+      return ApiService.get(`${ContentId}`, `${query}`)
+    }
     return ApiService.get(`${ContentId}`, `${qs}`)
   },
-  post(ContentId, data) {
+  getDestination (type, url, qs = '') {
+    if (qs && type === 'get') {
+      let query = '?'
+      Object.keys(qs).forEach(key => {
+        query = `${query}${key}=${qs[key]}&`
+      })
+      return ApiService.getDestination(type, url, query)
+    }
+    return ApiService.getDestination(type, url, qs)
+  },
+  post (ContentId, data) {
     return ApiService.post(`${ContentId}`, data)
   },
-  upload(file) {
+  upload (file) {
     return ApiService.upload(file)
   }
 }

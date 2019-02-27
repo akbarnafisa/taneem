@@ -1,14 +1,26 @@
 <template>
   <div class="costumer">
     <div class="header">Pengiriman dan Pembayaran</div>
-    <form @input="handleInput" class="wrapper d-flex flex-wrap justify-content-between">
+    <form
+      @input="handleInput"
+      class="wrapper d-flex flex-wrap justify-content-between"
+    >
       <div class="costumer__courier form__group">
         <div class="form__group-label">
           <label>Kurir Pengiriman</label>
           <div class="required">*Wajib</div>
         </div>
-        <label class="form__radio">
-          <input type="radio" name="courier" value="JNE REG" :checked="data.courier === 'JNE REG'"> JNE REG Rp. 54.000
+        <label
+          v-for="(courier) in courierData"
+          :key="courier.service"
+          class="form__radio"
+        >
+          <input
+            type="radio"
+            name="courier"
+            :value="`JNE ${courier.service}`"
+            :checked="data.courier === `JNE ${courier.service}`"
+          > JNE {{courier.service}} - Rp. {{(courier.cost[0].value).toLocaleString('id')}}
         </label>
         <span
           v-if="finalError.courier"
@@ -21,7 +33,12 @@
           <label>Metode Pembayaran</label>
         </div>
         <label class="form__radio">
-          <input type="radio" name="payment" value="Transfer Bank" checked> Transfer Bank
+          <input
+            type="radio"
+            name="payment"
+            value="Transfer Bank"
+            checked
+          > Transfer Bank
         </label>
         <span class="error"></span>
       </div>
@@ -45,13 +62,13 @@ export default {
       type: Boolean
     }
   },
-  data() {
+  data () {
     return {
       courierClicked: false
     };
   },
   methods: {
-    handleInput(e) {
+    handleInput (e) {
       const key = e.target.name;
       const value = e.target.value;
       this.courierClicked = true;
@@ -62,12 +79,15 @@ export default {
     }
   },
   computed: {
-    finalError() {
+    finalError () {
       return {
         courier:
           (this.error.courier && this.courierClicked) ||
           (this.error.name && this.submited)
       };
+    },
+    courierData () {
+      return this.$store.state.order.courierData
     }
   }
 };

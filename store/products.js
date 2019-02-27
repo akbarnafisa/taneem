@@ -7,145 +7,7 @@ import striptags from 'striptags'
 export const state = () => ({
   allProducts: null,
   keyList: {},
-  category: {
-    'produk-pilihan': [{
-
-      id: '1233sdasdas3',
-      image: '/images/produk4.jpg',
-      link: '/',
-      name: '18117',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sasdd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18118',
-      price: 100000,
-      new: true,
-      fromDiscount: 0
-    },
-    {
-      id: '123335123',
-      image: '/images/produk3.jpg',
-      link: '/',
-      name: '18113',
-      price: 130000,
-      fromDiscount: 0
-    },
-    {
-      id: '1233sdas3',
-      image: '/images/produk1.jpg',
-      link: '/',
-      name: '18114',
-      price: 120000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18115',
-      price: 100000,
-      new: true,
-      fromDiscount: 130000
-    },
-    {
-      id: '1233sd35123',
-      image: '/images/produk5.jpg',
-      link: '/',
-      name: '18116',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '1233sdasdas3',
-      image: '/images/produk4.jpg',
-      link: '/',
-      name: '18117',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sasdd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18118',
-      price: 100000,
-      new: true,
-      fromDiscount: 0
-    }
-    ],
-    'best-seller': [{
-      id: '1233sdasdas3',
-      image: '/images/produk4.jpg',
-      link: '/',
-      name: '18117',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sasdd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18118',
-      price: 100000,
-      new: true,
-      fromDiscount: 0
-    },
-    {
-      id: '123335123',
-      image: '/images/produk3.jpg',
-      link: '/',
-      name: '18113',
-      price: 130000,
-      fromDiscount: 0
-    },
-    {
-      id: '1233sdas3',
-      image: '/images/produk1.jpg',
-      link: '/',
-      name: '18114',
-      price: 120000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18115',
-      price: 100000,
-      new: true,
-      fromDiscount: 130000
-    },
-    {
-      id: '1233sd35123',
-      image: '/images/produk5.jpg',
-      link: '/',
-      name: '18116',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '1233sdasdas3',
-      image: '/images/produk4.jpg',
-      link: '/',
-      name: '18117',
-      price: 110000,
-      fromDiscount: 130000
-    },
-    {
-      id: '123asd3sasdd3zxczxc',
-      image: '/images/produk2.jpg',
-      link: '/',
-      name: '18118',
-      price: 100000,
-      new: true,
-      fromDiscount: 0
-    }
-    ]
-  },
+  category: {},
 
   //should remove category with - (dash) for links
   listCategory: null,
@@ -158,26 +20,30 @@ export const state = () => ({
 })
 
 export const mutations = {
-  SET_SORT(state, payload) {
+  SET_SORT (state, payload) {
     state.sortSelected = payload;
   },
-  SET_ALLPRODUCTS(state, payload) {
+  SET_ALLPRODUCTS (state, payload) {
     state.allProducts = payload;
   },
-  SET_KEY_LIST(state, payload) {
+  SET_ALLCOLLECTIONS (state, payload) {
+    state.category = payload;
+  },
+  SET_KEY_LIST (state, payload) {
     state.keyList = payload
   },
-  SET_CATEGORY(state, payload) {
+  SET_CATEGORY (state, payload) {
     state.listCategory = payload
   }
 }
 
 export const actions = {
-  FETCH_PRODUCT({ commit }) {
+  FETCH_PRODUCT ({ state, commit }) {
     return new Promise((resolve, reject) => {
       ContentService.get('produk')
         .then((res) => {
           let kv = {}
+          let collections = {}
           const data = res.data.data.map((v, index) => {
             const images = {
               images: v.images
@@ -191,11 +57,14 @@ export const actions = {
             const link = v.name.toLowerCase()
               .replace(/[^\w ]+/g, '')
               .replace(/ +/g, '-')
+
             kv = {
               ...kv,
               [link]: index
             }
-            return {
+
+
+            const result = {
               ...v,
               ...image,
               image: image.images[0],
@@ -203,10 +72,20 @@ export const actions = {
               nextData,
               colors,
               sizes,
-              // date,
               descData: strip
             }
+
+            Object.keys(state.listCategory).forEach(key => {
+              if (v.category && state.listCategory[key] === v.category) {
+                collections = {
+                  ...collections,
+                  [key]: collections[key] ? [...collections[key], result] : [result]
+                }
+              }
+            })
+            return result
           })
+          commit('SET_ALLCOLLECTIONS', collections)
           commit('SET_KEY_LIST', kv)
           commit('SET_ALLPRODUCTS', data)
           resolve(data)
@@ -216,13 +95,21 @@ export const actions = {
         })
     })
   },
-  FETCH_CATEGORY({ commit }) {
-    console.log('gg')
+  FETCH_CATEGORY ({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       ContentService.get('category')
         .then((res) => {
-          commit('SET_CATEGORY', res.data.data);
-          resolve(res.data.data)
+          let category = {}
+          res.data.data.forEach((v) => {
+            category = {
+              ...category,
+              [v.title.replace(/ +/g, '-').toLowerCase()]: v._id
+            }
+          })
+
+          commit('SET_CATEGORY', category);
+          const fetchProduct = dispatch('FETCH_PRODUCT');
+          resolve(fetchProduct)
         })
         .then(err => reject(err))
     })
@@ -230,10 +117,9 @@ export const actions = {
 }
 
 export const getters = {
-  GET_PRODUCT(state) {
+  GET_PRODUCT (state) {
     return (link) => {
       const key = state.keyList[link]
-      console.log(key);
       return state.allProducts[key]
     }
   }

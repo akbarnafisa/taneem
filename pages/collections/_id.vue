@@ -5,13 +5,13 @@
         <h4 class="fw-700 h3-sm">{{heading}}</h4>
       </div>
       <div class="product__header row">
-        <breadcrumbs class="m-0 col-md-8 col-lg-9"/>
+        <breadcrumbs class="m-0 col-md-8 col-lg-9" />
         <div class="product__view mt-5 col-md-4 col-lg-3 mt-md-0">
           <!-- <produk-filter/> -->
-          <produk-sort/>
+          <produk-sort />
         </div>
       </div>
-      <produk-list :data="Products"/>
+      <produk-list :data="Products" />
     </div>
   </div>
 </template>
@@ -29,18 +29,23 @@ export default {
     ProdukFilter,
     ProdukList
   },
-  data() {
+  data () {
     return {};
   },
+  async asyncData ({ store }) {
+    if (store.state.products.listCategory === null) {
+      await store.dispatch("products/FETCH_CATEGORY");
+    }
+  },
   computed: {
-    Products() {
+    Products () {
       const key = this.$route.params.id;
       if (key !== "seluruh-produk")
         return this.$store.state.products.category[key];
 
       return this.$store.state.products.allProducts;
     },
-    heading() {
+    heading () {
       return this.$route.params.id.replace(/\-/g, " ");
     }
   }

@@ -129,6 +129,9 @@ input[type='email'],
 input[type='number'],
 select,
 textarea {
+  webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 	padding: 10px 12px;
   border: 1px solid rgba(220,220,240,1);
   border-radius: 4px;
@@ -139,6 +142,7 @@ textarea {
   font-size: $font-size;
   font-family: $family-primary;
   color: $black60;
+  background: transparent;
   
   &.small {
     padding: 5px 12px;
