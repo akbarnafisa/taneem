@@ -1,26 +1,48 @@
 <template>
   <div class="information container section pt-0 mw-3">
-    <slot/>
+    <slot />
     <h4 class="underline-header h4-sm mb-0">Informasi</h4>
     <input
       placeholder="Tulis pertanyaan atau kata kunci yang ingin kamu cari"
       class="information__input"
       type="text"
+      v-model="search"
     >
-    <div
-      v-for="(list, index) in informations"
-      :key="index"
-      class="information__list"
-      :class="tabActive === index ? 'active' : null"
-    >
-      <div @click="handleClick(index)" class="information__title">
-        {{list.title}}
-        <arrow class="arrow" color="rgba(0,0,0,.4)" direction="down"/>
+    <div v-if="filteredSearch.length > 0">
+      <div
+        v-for="(list, index) in filteredSearch"
+        :key="index"
+        class="information__list"
+        :class="tabActive === index ? 'active' : null"
+      >
+        <div
+          @click="handleClick(index)"
+          class="information__title"
+        >
+          {{list.title}}
+          <arrow
+            class="arrow"
+            color="rgba(0,0,0,.4)"
+            direction="down"
+          />
+        </div>
+        <transition
+          name="fade"
+          mode="out-in"
+        >
+          <div
+            v-show="tabActive === index"
+            class="information__content"
+          >{{list.content}}</div>
+        </transition>
       </div>
-      <transition name="fade" mode="out-in">
-        <div v-show="tabActive === index" class="information__content">{{list.content}}</div>
-      </transition>
     </div>
+    <div v-else>
+      <p class="flex-center mt-5 fw-700">
+        Tidak ada data ditemukan
+      </p>
+    </div>
+
   </div>
 </template>
 
@@ -38,13 +60,30 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
-      tabActive: null
+      tabActive: null,
+      search: '',
     };
   },
+  computed: {
+    filteredSearch () {
+      const self = this;
+      if (this.search !== "") {
+        return this.informations.filter(content => {
+          return Object.values(content).some(val =>
+            String(val)
+              .toLowerCase()
+              .includes(self.search.toLowerCase())
+          );
+        });
+      } else {
+        return this.informations;
+      }
+    }
+  },
   methods: {
-    handleClick(index) {
+    handleClick (index) {
       if (this.tabActive === index) {
         this.tabActive = null;
       } else {
