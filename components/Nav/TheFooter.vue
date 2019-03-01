@@ -3,9 +3,7 @@
     <div class="footer-top">
       <div class="container h-100">
         <div class="row h-100">
-          <div
-            class="col-md-6 flex-center h5 text-center mb-4 mb-md-0"
-          >Kunjungi Juga Halaman Penjual Resmi Kami</div>
+          <div class="col-md-6 flex-center h5 text-center mb-4 mb-md-0">Kunjungi Juga Halaman Penjual Resmi Kami</div>
           <div class="affiliates col-md-6 flex-items justify-content-around">
             <div></div>
             <div></div>
@@ -17,7 +15,11 @@
       <div class="container py-5 py-md-7 white">
         <div class="row">
           <div class="col-md-3 col-6 mb-6">
-            <nuxt-link aria-label="go" style="width: initial;" to="/">LOGO
+            <nuxt-link
+              aria-label="go"
+              style="width: initial;"
+              to="/"
+            >LOGO
               <!-- <img alt="logo" class="logo" src="/logo.png"> -->
             </nuxt-link>
 
@@ -28,11 +30,23 @@
           </div>
           <div class="col-md-2 col-6 mb-6">
             <h5>Navigasi</h5>
-            <nuxt-link aria-label="go" to="/">Beranda</nuxt-link>
-            <nuxt-link aria-label="go" to="/produk">Produk</nuxt-link>
-            <nuxt-link aria-label="go" to="/informasi">Informasi</nuxt-link>
-            <nuxt-link aria-label="go" to="/konfirmasi">Konfirmasi</nuxt-link>
-            <nuxt-link aria-label="go" to="/Artikel">Artikel</nuxt-link>
+            <nuxt-link
+              aria-label="go"
+              to="/"
+            >Beranda</nuxt-link>
+            <nuxt-link
+              aria-label="go"
+              to="/produk"
+            >Produk</nuxt-link>
+            <nuxt-link
+              aria-label="go"
+              to="/informasi"
+            >Informasi</nuxt-link>
+            <!-- <nuxt-link aria-label="go" to="/konfirmasi">Konfirmasi</nuxt-link> -->
+            <nuxt-link
+              aria-label="go"
+              to="/Artikel"
+            >Artikel</nuxt-link>
           </div>
           <div class="col-md-2 col-6 mb-6">
             <h5>Sosial</h5>

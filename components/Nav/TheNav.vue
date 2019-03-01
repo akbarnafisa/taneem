@@ -1,6 +1,9 @@
 <template>
   <div class="navbar w-100">
-    <nav role="navigation " class="container flex-items justify-content-between h-100">
+    <nav
+      role="navigation "
+      class="container flex-items justify-content-between h-100"
+    >
       <div class="nav-right">LOGO</div>
       <div class="nav-left flex-items">
         <nuxt-link
@@ -10,14 +13,14 @@
           :to="link.to"
           aria-label="navigation"
         >{{link.name}}</nuxt-link>
-        <nav-cart type="desktop">
+        <!-- <nav-cart type="desktop">
           <template class="pointer" slot-scope="slotProps">
             <nuxt-link class="cart-wrapper flex-items" to="/cart" aria-label="navigation">
               <div class="menu menu--cart px-3"/>
               <div class="cart__count">{{slotProps.cartItems}}</div>
             </nuxt-link>
           </template>
-        </nav-cart>
+        </nav-cart> -->
       </div>
     </nav>
   </div>
@@ -26,7 +29,7 @@
 <script>
 import NavCart from "./NavCart";
 export default {
-  data() {
+  data () {
     return {
       links: [
         {
@@ -41,10 +44,10 @@ export default {
           name: "Informasi",
           to: "/informasi"
         },
-        {
-          name: "Konfirmasi Pembayaran",
-          to: "/konfirmasi-pembayaran"
-        }
+        // {
+        //   name: "Konfirmasi Pembayaran",
+        //   to: "/konfirmasi-pembayaran"
+        // }
       ]
     };
   },
@@ -52,7 +55,7 @@ export default {
     NavCart
   },
   computed: {
-    category() {
+    category () {
       return this.$store.state.products.listCategory;
     }
   }

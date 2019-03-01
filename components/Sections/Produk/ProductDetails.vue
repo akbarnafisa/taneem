@@ -72,10 +72,10 @@
         <button
           @click="addToCart"
           class="btn btn--medium primary addToCart"
-        >Beli Ecer</button>
-        <button class="btn btn--medium secondary">Beli Seri</button>
+        >Beli</button>
+        <!-- <button class="btn btn--medium secondary">Beli Seri</button> -->
       </div>
-      <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div>
+      <!-- <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div> -->
       <share-social :title="product.name" />
       <div
         class="product__desc mt-7"
@@ -125,6 +125,7 @@ export default {
     },
     addToCart () {
       this.error = false;
+      const self = this;
       this.$store
         .dispatch("order/ADD_ORDER", {
           _id: this.product._id,
@@ -138,9 +139,10 @@ export default {
           quantity: this.order.quantity
         })
         .then(() => {
+          console.log(self.product, self.order)
           const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
-            this.product.name
-            } dengan warna ${this.product.color} dan ukuran ${this.product.size} sebanyak ${this.order.quantity}`
+            self.product.name
+            } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
           const win = window.open(value, "_blank");
           win.focus();
         })
