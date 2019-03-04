@@ -47,10 +47,10 @@ export const mutations = {
   },
   LOAD_CART (state) {
     if (process.browser) {
-      // const data = JSON.parse(//window.localStorage.getItem('cartItems'))
-      // if (data && data.length > 0) {
-      //   state.items = (data)
-      // }
+      const data = JSON.parse(window.localStorage.getItem('cartItems'))
+      if (data && data.length > 0) {
+        state.items = (data)
+      }
     }
   },
   ADD_CART (state, payload) {
@@ -69,7 +69,7 @@ export const mutations = {
     } else {
       state.items.push(payload)
     }
-    //window.localStorage.setItem('cartItems', JSON.stringify(state.items))
+    window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
   EDIT_CART (state, payload) {
 
@@ -78,17 +78,17 @@ export const mutations = {
       [payload.key]: payload.value
     }
     Vue.set(state.items, payload.index, data)
-    //window.localStorage.setItem('cartItems', JSON.stringify(state.items))
+    window.localStorage.setItem('cartItems', JSON.stringify(state.items))
 
-    // state.items[payload.index][payload.key] = payload.value;
+    state.items[payload.index][payload.key] = payload.value;
   },
   REMOVE_CART (state, payload) {
     state.items = state.items.filter((item, index) => index !== payload)
-    //window.localStorage.setItem('cartItems', JSON.stringify(state.items))
+    window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
   EMPTY_CART (state) {
     state.items = []
-    //window.localStorage.setItem('cartItems', JSON.stringify(state.items))
+    window.localStorage.setItem('cartItems', JSON.stringify(state.items))
   },
   SET_PAYMENT (state) {
     let subtotal, totalDiscount, discount
@@ -118,8 +118,8 @@ export const mutations = {
   },
   LOAD_COSTUMER (state, payload) {
     if (process.browser) {
-      const data = //window.localStorage.getItem('dataCostumer')
-        state.dataCostumer = JSON.parse(data)
+      const data = window.localStorage.getItem('dataCostumer')
+      state.dataCostumer = JSON.parse(data)
     }
   },
   EDIT_COSTUMER (state, payload) {
@@ -127,7 +127,7 @@ export const mutations = {
       ...state.dataCostumer,
       [payload.key]: payload.value
     }
-    //window.localStorage.setItem('dataCostumer', JSON.stringify(state.dataCostumer))
+    window.localStorage.setItem('dataCostumer', JSON.stringify(state.dataCostumer))
   },
   REMOVE_COSTUMER (state) {
     state.dataCostumer = {
@@ -165,7 +165,7 @@ export const actions = {
         resolve('Success')
         commit('ADD_CART', payload)
         commit('SET_PAYMENT')
-        // commit('REMOVE_NEWORDER')
+        commit('REMOVE_NEWORDER')
       }
     })
   },
