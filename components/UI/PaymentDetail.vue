@@ -6,7 +6,10 @@
       'header--review' : type === 'checkout-review'
     }"
     >Rincian Belanja</div>
-    <div v-if="$route.name.includes('checkout')" class="payment__id">
+    <div
+      v-if="$route.name.includes('checkout')"
+      class="payment__id"
+    >
       <span class="paymentId">ID Pembayaran</span>
       <span class="id">{{paymentId}}</span>
     </div>
@@ -18,22 +21,21 @@
       <span class="title">Diskon</span>
       <span class="price">Rp. {{(payment.discount).toLocaleString('id') }}</span>
     </div>
-    <div class="payment__shipping">
+    <!-- <div class="payment__shipping">
       <span class="title">Biaya Kirim</span>
       <span class="price">Rp. {{(payment.ongkir).toLocaleString('id') }}</span>
-    </div>
+    </div> -->
     <div class="payment__total">
       <span class="title">Total</span>
       <span class="price">Rp. {{(payment.total).toLocaleString('id') }}</span>
     </div>
     <span v-if="type !== 'checkout-review'">
       <div class="notes">*belum termasih biaya kirim</div>
-      <slot/>
-      <nuxt-link
-        @click.native="handleClick"
-        :to="page.link"
+      <slot />
+      <button
+        @click="handleClick"
         class="btn btn--medium primary w-100 flex-justify"
-      >{{page.button}}</nuxt-link>
+      >{{page.button}}</button>
     </span>
   </div>
 </template>
@@ -47,20 +49,34 @@ export default {
       default: "default"
     }
   },
-  data() {
+  data () {
     return {
       route: this.$route.name
     };
   },
   methods: {
-    handleClick() {
+    handleClick () {
       if (this.route === "cart") {
-        this.$store.commit("order/ADD_PAYMENT_ID");
+        // this.$store.commit("order/ADD_PAYMENT_ID");
+        // const head = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
+        //   self.product.name
+        //   } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
+        const data = this.$store.state.order.items
+        const payment = this.$store.state.order.payment
+        const head = `https://api.whatsapp.com/send?phone=6282320114568&text=Halo Taneem, saya ingin pesan produk: `
+        let msg = "" + "\r\n"
+        data.forEach((el, index) => {
+          msg = msg + `- ${el.name} [${el.color.trim()}] [${el.size.trim()}] [${el.quantity}] : Rp. ${(el.price).toLocaleString('id')}` + "\r\n"
+        });
+        msg = msg + "\r\n" + `Subtotal Rp. ${(payment.subtotal).toLocaleString('id')} ${"\r\n"}Diskon Rp. ${(payment.discount).toLocaleString('id')} ${"\r\n"}Total Rp. ${(payment.total).toLocaleString('id')}`
+        msg = window.encodeURIComponent(msg)
+        const win = window.open(head + msg, "_blank");
+        win.focus();
       }
     }
   },
   computed: {
-    page() {
+    page () {
       if (this.$route.name.includes("address-and-payment")) {
         return {
           link: "/checkout/address-and-payment",
@@ -72,10 +88,10 @@ export default {
         button: "Lanjut ke Pembayaran"
       };
     },
-    payment() {
+    payment () {
       return this.$store.state.order.payment;
     },
-    paymentId() {
+    paymentId () {
       return this.$store.state.order.paymentId;
     }
   }

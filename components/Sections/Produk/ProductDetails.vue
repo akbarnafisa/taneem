@@ -141,13 +141,13 @@ export default {
           size: this.order.size,
           quantity: this.order.quantity
         })
-        .then(() => {
-          const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
-            self.product.name
-            } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
-          const win = window.open(value, "_blank");
-          win.focus();
-        })
+        // .then(() => {
+        //   const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
+        //     self.product.name
+        //     } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
+        //   const win = window.open(value, "_blank");
+        //   win.focus();
+        // })
         .catch(err => {
           this.error = true;
           this.scroll();
