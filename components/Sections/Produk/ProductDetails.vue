@@ -1,9 +1,15 @@
 <template>
   <div class="product row">
     <div class="col-lg-6 product__slider">
-      <carousel :data="product.images" type="product"/>
+      <carousel
+        :data="product.images"
+        type="product"
+      />
     </div>
-    <div id="top" class="product__desc col-lg-6">
+    <div
+      id="top"
+      class="product__desc col-lg-6"
+    >
       <div class="product__title">Tane'em - {{product.name}}</div>
 
       <div class="product__price">
@@ -34,14 +40,23 @@
       <div class="product__plus">
         <div class="label">Keunggulan</div>
         <div class="product__icon__wrapper">
-          <div v-if="product.bahan.trim() !== ''" class="product__icon">
+          <div
+            v-if="product.bahan.trim() !== ''"
+            class="product__icon"
+          >
             <div class="product__icon--bahan"></div>
             {{product.bahan}}
           </div>
-          <div v-if="product.syari" class="product__icon">
+          <div
+            v-if="product.syari"
+            class="product__icon"
+          >
             <div class="product__icon--syari"></div>Syar'i
           </div>
-          <div v-if="product.hamil" class="product__icon product__icon--hamil">
+          <div
+            v-if="product.hamil"
+            class="product__icon product__icon--hamil"
+          >
             <div class="product__icon--hamil"></div>Bisa untuk Ibu Hamil
           </div>
         </div>
@@ -54,12 +69,21 @@
       />
 
       <div class="product__button">
-        <button @click="addToCart" class="btn btn--medium primary addToCart">Beli Ecer</button>
-        <button class="btn btn--medium secondary">Beli Seri</button>
+        <button
+          @click="addToCart"
+          class="btn btn--medium primary addToCart"
+        >Beli Ecer</button>
+        <button
+          @click="beliSeri"
+          class="btn btn--medium secondary"
+        >Beli Seri</button>
       </div>
-      <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div>
-      <share-social :title="product.name"/>
-      <div class="product__desc mt-7" v-html="product.desc"></div>
+      <!-- <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div> -->
+      <share-social :title="product.name" />
+      <div
+        class="product__desc mt-7"
+        v-html="product.desc"
+      ></div>
     </div>
   </div>
 </template>
@@ -86,24 +110,25 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       submited: false,
       error: false
     };
   },
-  created() {
+  created () {
     this.resetOrder();
   },
   methods: {
-    resetOrder() {
+    resetOrder () {
       this.$store.commit("order/REMOVE_NEWORDER");
     },
-    handleInput(data) {
+    handleInput (data) {
       this.$store.commit("order/SET_NEWORDER", data);
     },
-    addToCart() {
+    addToCart () {
       this.error = false;
+      const self = this;
       this.$store
         .dispatch("order/ADD_ORDER", {
           _id: this.product._id,
@@ -116,12 +141,24 @@ export default {
           size: this.order.size,
           quantity: this.order.quantity
         })
+        // .then(() => {
+        //   const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
+        //     self.product.name
+        //     } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
+        //   const win = window.open(value, "_blank");
+        //   win.focus();
+        // })
         .catch(err => {
           this.error = true;
           this.scroll();
         });
     },
-    scroll() {
+    beliSeri () {
+      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${self.product.name} secara seri`
+      const win = window.open(value, "_blank");
+      win.focus();
+    },
+    scroll () {
       const element = document.querySelector("#top").offsetTop;
       window.scroll({
         top: element - 50,
@@ -130,7 +167,7 @@ export default {
     }
   },
   computed: {
-    order() {
+    order () {
       return this.$store.state.order.newOrder;
     }
   }

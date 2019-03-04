@@ -80,7 +80,7 @@ export const mutations = {
     Vue.set(state.items, payload.index, data)
     window.localStorage.setItem('cartItems', JSON.stringify(state.items))
 
-    // state.items[payload.index][payload.key] = payload.value;
+    state.items[payload.index][payload.key] = payload.value;
   },
   REMOVE_CART (state, payload) {
     state.items = state.items.filter((item, index) => index !== payload)
@@ -162,10 +162,10 @@ export const actions = {
       if (state.newOrder.size === null || state.newOrder.color === null) {
         reject(new Error('data not complete'))
       } else {
+        resolve('Success')
         commit('ADD_CART', payload)
         commit('SET_PAYMENT')
         commit('REMOVE_NEWORDER')
-        resolve('Success')
       }
     })
   },
