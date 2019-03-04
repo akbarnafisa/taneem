@@ -72,8 +72,11 @@
         <button
           @click="addToCart"
           class="btn btn--medium primary addToCart"
-        >Beli</button>
-        <!-- <button class="btn btn--medium secondary">Beli Seri</button> -->
+        >Beli Ecer</button>
+        <button
+          @click="beliSeri"
+          class="btn btn--medium secondary"
+        >Beli Seri</button>
       </div>
       <!-- <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div> -->
       <share-social :title="product.name" />
@@ -139,7 +142,6 @@ export default {
           quantity: this.order.quantity
         })
         .then(() => {
-          console.log(self.product, self.order)
           const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${
             self.product.name
             } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
@@ -150,6 +152,11 @@ export default {
           this.error = true;
           this.scroll();
         });
+    },
+    beliSeri () {
+      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${self.product.name} secara seri`
+      const win = window.open(value, "_blank");
+      win.focus();
     },
     scroll () {
       const element = document.querySelector("#top").offsetTop;
