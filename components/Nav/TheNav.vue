@@ -165,6 +165,7 @@
             <div class="d-sm-none d-md-block">
               <nuxt-link
                 v-for="(link, index) in links"
+                :exact="link.name === 'Beranda' ? true : false"
                 :key="link.name + index"
                 class="menu px-3"
                 :to="link.to"
@@ -540,7 +541,7 @@ export default {
     transform: scale(0.9);
     background: url("/svg/cart.svg");
   }
-  &.nuxt-link-exact-active {
+  &.nuxt-link-active {
     color: $primary50;
 
     &:after {

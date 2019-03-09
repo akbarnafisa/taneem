@@ -72,6 +72,7 @@ export default {
         msg = window.encodeURIComponent(msg)
         const win = window.open(head + msg, "_blank");
         win.focus();
+        this.$store.commit('order/EMPTY_CART')
       }
     }
   },

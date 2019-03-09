@@ -20,32 +20,32 @@ export default {
     title: { type: String, required: true }
   },
   methods: {
-    share(type) {
+    share (type) {
       let url = "";
       if (type === "facebook") {
         url = `https://www.facebook.com/sharer/sharer.php?u=${
           window.location.href
-        }`;
+          }`;
       }
       if (type === "whatsapp") {
         url = `https://api.whatsapp.com/send?text=${
           this.title
-        } | Opposite Coffee ${window.location.href}`;
+          } | Muslim Dress Taneem ${window.location.href}`;
       }
       if (type === "twitter") {
         url = `https://twitter.com/intent/tweet?text=${
           this.title
-        } by Opposite Coffee ${window.location.href}`;
+          } by Muslim Dress Taneem ${window.location.href}`;
       }
       if (type === "line") {
         url = `https://social-plugins.line.me/lineit/share?url=${
           window.location.href
-        }&text=${this.title} | Opposite Coffee `;
+          }&text=${this.title} | Muslim Dress Taneem `;
       }
       window.open(url, "CNN_WindowName", "width=320,height=400");
     }
   },
-  data() {
+  data () {
     return {
       data: [
         {
