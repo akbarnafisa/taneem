@@ -1,10 +1,24 @@
 <template>
   <div class="product__quantity">
-    <div v-if="type === 'default'" class="label">Kuantitas</div>
+    <div
+      v-if="type === 'default'"
+      class="label"
+    >Kuantitas</div>
     <div class="product__quantity__wrapper flex-wrap">
-      <div class="flex-items" :class="{'product__quantity--cart' : type === 'cart'}">
-        <button @click="quantityButton('left')" class="product__quantity__button button--left">
-          <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
+      <div
+        class="flex-items"
+        :class="{'product__quantity--cart' : type === 'cart'}"
+      >
+        <button
+          @click="quantityButton('left')"
+          class="product__quantity__button button--left"
+        >
+          <svg
+            enable-background="new 0 0 10 10"
+            viewBox="0 0 10 10"
+            x="0"
+            y="0"
+          >
             <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
           </svg>
         </button>
@@ -18,11 +32,17 @@
           :value="quantity"
           name="quantity"
         >
-        <button @click="quantityButton('right')" class="product__quantity__button button--right">
-          <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0">
-            <polygon
-              points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"
-            ></polygon>
+        <button
+          @click="quantityButton('right')"
+          class="product__quantity__button button--right"
+        >
+          <svg
+            enable-background="new 0 0 10 10"
+            viewBox="0 0 10 10"
+            x="0"
+            y="0"
+          >
+            <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon>
           </svg>
         </button>
       </div>
@@ -52,13 +72,13 @@ export default {
       type: String
     }
   },
-  data() {
+  data () {
     return {
       __test: null
     };
   },
   methods: {
-    quantityButton(type) {
+    quantityButton (type) {
       let value = this.quantity;
       if (type === "left" && value !== 1) {
         value -= 1;
@@ -72,7 +92,7 @@ export default {
       };
       this.$emit("handleInput", data);
     },
-    quantityChange(e, index) {
+    quantityChange (e, index) {
       let value = Number(e.target.value);
       if (value === 0 || value === 1) value = 1;
       this.__test = value;
@@ -82,7 +102,7 @@ export default {
       };
       this.$emit("handleInput", data);
     },
-    checkQuantity(e) {
+    checkQuantity (e) {
       const value = Number(e.target.value);
       if (value > this.stock) {
         this.$emit("handleInput", {

@@ -6,7 +6,6 @@
         <product-details :product="product" />
       </div>
     </div>
-
     <div class="section section-2">
       <product-slider
         class="container wrapper py-5 py-md-7"
@@ -29,6 +28,7 @@
 import ProductSlider from "@/components/UI/ProductSlider";
 import Breadcrumbs from "@/components/UI/Breadcrumbs";
 import ProductDetails from "@/components/Sections/Produk/ProductDetails";
+import { ContentService } from '~/utils/api.service'
 
 export default {
   components: {
@@ -36,13 +36,40 @@ export default {
     ProductSlider,
     ProductDetails
   },
-  async asyncData ({ store, route }) {
+  async asyncData ({ app, store, route }) {
     if (store.state.products.listCategory === null) {
       await store.dispatch("products/FETCH_CATEGORY");
     }
+    const self = this
     const id = route.params.id.split("-")[1];
+    const product = store.getters["products/GET_PRODUCT"](id)
+    const variation = await new Promise((resolve, reject) => {
+      ContentService.get('variasi', {
+        produk_id: product._id
+      })
+        .then(res => {
+          let data = {}
+          res.data.data.map(val => {
+            const key = `${val.color}${val.size}`.toLowerCase().replace(/ /g, "")
+            data = {
+              ...data,
+              [key]: val.quantity
+            }
+          })
+          store.commit('products/SET_VARIATIONS', {
+            key: store.state.products.keyList[id],
+            data
+          })
+          resolve(data)
+        })
+        .catch(err => {
+          console.log(err)
+          app.router.push('/')
+        })
+    })
+
     return {
-      product: store.getters["products/GET_PRODUCT"](id)
+      product,
     };
   },
   data () {

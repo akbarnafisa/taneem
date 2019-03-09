@@ -63,22 +63,30 @@
       </div>
 
       <product-quantity
+        v-if="checkQuantity && checkQuantity > 0"
         @handleInput="handleInput($event)"
         :quantity="order.quantity"
-        :stock="product.stock"
+        :stock="checkQuantity"
       />
+      <p
+        class="error"
+        :class="checkQuantity === undefined || ( checkQuantity <= 0 && this.order.size && this.order.color) ? 'errorShake' : null"
+        v-if="checkQuantity === undefined || ( checkQuantity <= 0 && this.order.size && this.order.color)"
+      >Stock tidak tersedia</p>
 
       <div class="product__button">
         <button
+          :disabled="checkQuantity === undefined || ( checkQuantity <= 0 && this.order.size && this.order.color)"
           @click="addToCart"
           class="btn btn--medium primary addToCart"
         >Beli Ecer</button>
         <button
+          :disabled="checkQuantity === undefined || ( checkQuantity <= 0 && this.order.size && this.order.color)"
           @click="beliSeri"
           class="btn btn--medium secondary"
         >Beli Seri</button>
       </div>
-      <!-- <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div> -->
+      <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div>
       <share-social :title="product.name" />
       <div
         class="product__desc mt-7"
@@ -108,7 +116,7 @@ export default {
     product: {
       required: true,
       type: Object
-    }
+    },
   },
   data () {
     return {
@@ -154,7 +162,7 @@ export default {
         });
     },
     beliSeri () {
-      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${self.product.name} secara seri`
+      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${this.product.name} secara seri`
       const win = window.open(value, "_blank");
       win.focus();
     },
@@ -169,12 +177,24 @@ export default {
   computed: {
     order () {
       return this.$store.state.order.newOrder;
+    },
+    checkQuantity () {
+      const { color, size } = this.order;
+      if (color && size) {
+        const key = `${color}${size}`.toLowerCase().replace(/ /g, "")
+        return this.product.variations[key]
+      }
+      return false
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.error {
+  background-color: lighten($primary50, 65%);
+  padding: 16px 32px;
+}
 .product {
   .notes {
     font-size: $font-medium;
