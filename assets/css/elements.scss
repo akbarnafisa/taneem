@@ -11,6 +11,20 @@ button {
   font-family: $family-primary;
 }
 
+button:disabled,
+button[disabled] {
+	cursor: not-allowed;
+	&.primary {
+		opacity: 0.3;
+		background-color: $black50 !important;
+	}
+	&.secondary {
+		border-color: $black50 !important;
+		color: $black50 !important;
+		background-color: $white !important;
+	}
+}
+
 .label {
     font-weight: 700;
     color: $black60;
@@ -39,7 +53,7 @@ button {
   }
 
   &--large {
-    font-size: 18px;
+		font-size: 18px;
     padding: 15px 30px;
   }
 

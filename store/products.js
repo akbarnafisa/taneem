@@ -26,6 +26,9 @@ export const mutations = {
   SET_ALLPRODUCTS (state, payload) {
     state.allProducts = payload;
   },
+  SET_VARIATIONS (state, payload) {
+    state.allProducts[payload.key]['variations'] = payload.data
+  },
   SET_ALLCOLLECTIONS (state, payload) {
     state.category = payload;
   },
