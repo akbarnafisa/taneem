@@ -162,7 +162,7 @@ export default {
         });
     },
     beliSeri () {
-      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${self.product.name} secara seri`
+      const value = `https://api.whatsapp.com/send?phone=6282320114568&text=Hi Saya ingin pesan produk ${this.product.name} secara seri`
       const win = window.open(value, "_blank");
       win.focus();
     },
@@ -192,7 +192,7 @@ export default {
 
 <style lang="scss" scoped>
 .error {
-  background-color: $primary10;
+  background-color: lighten($primary50, 65%);
   padding: 16px 32px;
 }
 .product {
