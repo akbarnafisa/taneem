@@ -63,7 +63,7 @@ export default {
         //   } dengan warna ${self.order.color} dan ukuran ${self.order.size} sebanyak ${self.order.quantity}`
         const data = this.$store.state.order.items
         const payment = this.$store.state.order.payment
-        const head = `https://api.whatsapp.com/send?phone=085711453137&text=Halo Taneem, saya ingin pesan produk: `
+        const head = `https://api.whatsapp.com/send?phone=62783369574&text=Halo Taneem, saya ingin pesan produk: `
         let msg = "" + "\r\n"
         data.forEach((el, index) => {
           msg = msg + `- ${el.name} [${el.color.trim()}] [${el.size.trim()}] [${el.quantity}] : Rp. ${(el.price).toLocaleString('id')}` + "\r\n"
