@@ -162,7 +162,7 @@ export default {
         });
     },
     beliSeri () {
-      const value = `https://api.whatsapp.com/send?phone=62783369574&text=Hi Saya ingin pesan produk ${this.product.name} secara seri`
+      const value = `https://api.whatsapp.com/send?phone=627833669574&text=Hi Saya ingin pesan produk ${this.product.name} secara seri`
       const win = window.open(value, "_blank");
       win.focus();
     },
