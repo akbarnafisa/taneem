@@ -80,11 +80,6 @@
           @click="addToCart"
           class="btn btn--medium primary addToCart"
         >Beli Ecer</button>
-        <button
-          :disabled="checkQuantity === undefined || ( checkQuantity <= 0 && this.order.size && this.order.color)"
-          @click="beliSeri"
-          class="btn btn--medium secondary"
-        >Beli Seri</button>
       </div>
       <div class="notes">*Dapatkan harga lebih murah dengan pembelian seri</div>
       <share-social :title="product.name" />
