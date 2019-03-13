@@ -41,7 +41,7 @@ export default {
       await store.dispatch("products/FETCH_CATEGORY");
     }
     const self = this
-    const id = route.params.id.split("-")[1];
+    const id = route.params.id;
     const product = store.getters["products/GET_PRODUCT"](id)
     const variation = await new Promise((resolve, reject) => {
       ContentService.get('variasi', {
