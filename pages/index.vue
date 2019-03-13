@@ -12,6 +12,7 @@
           :data="SelectionProduct"
         />
         <produk-list
+          v-if="BestSellerProduct"
           class="section"
           type="page-home"
           header="Best Seller"
