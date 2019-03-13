@@ -47,10 +47,10 @@ export default {
       return this.$store.state.home.sliders;
     },
     SelectionProduct () {
-      return this.$store.state.products.category["produk-pilihan"].slice(0, 8);
+      return this.$store.state.products.category["produk-pilihan"] && this.$store.state.products.category["produk-pilihan"].slice(0, 8);
     },
     BestSellerProduct () {
-      return this.$store.state.products.category["best-seller"].slice(0, 8);
+      return this.$store.state.products.category["best-seller"] && this.$store.state.products.category["best-seller"].slice(0, 8);
     }
   }
 };
