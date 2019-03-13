@@ -6,6 +6,7 @@
     <div class="section-white">
       <section class="container">
         <produk-list
+          v-if="SelectionProduct"
           class="section"
           type="page-home"
           header="Produk Pilihan"

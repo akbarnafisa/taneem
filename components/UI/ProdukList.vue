@@ -11,7 +11,7 @@
       <nuxt-link
         v-for="(product, index) in data"
         :key="product.name + index + index"
-        :to="`/produk/taneem-${product.name}`"
+        :to="`/produk/${product.link}`"
         class="product__item col-lg-3 col-md-4 col-6 mb-lg-7 mb-5"
       >
         <div class="product__image-wrapper">
