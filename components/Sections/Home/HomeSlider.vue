@@ -1,5 +1,9 @@
 <template>
-  <div class="carousel">
+  <div class="carousel"
+    :style="{
+      paddingTop: sliderHeight
+    }"
+  >
     <Carousel :data="data" type="home"/>
   </div>
 </template>
@@ -16,7 +20,21 @@ export default {
   },
   components: {
     Carousel
-  }
+  },
+  mounted() {
+    this.windowWidth = window.innerWidth
+  },
+  computed: {
+    sliderHeight() {
+      const height = `${this.windowWidth < 720 ? 100 : 41.66}%`
+      return height
+    }
+  },
+  data() {
+    return {
+      windowWidth: 1366,
+    };
+  },
 };
 </script>
 

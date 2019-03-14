@@ -6,16 +6,18 @@
       :src="`${data}`"
       class="sliderItem__imageProduk"
       alt="Taneem Products"
-      style="width: 100%;"
+      style="width: 100%"
       @dblclick="openNewTab(data.image)"
     >
-    <nuxt-link v-else v-show="currIndex === dataId" :to="data.link">
+    <nuxt-link v-else v-show="currIndex === dataId" :to="data.link"
+      style="display: block"
+    >
       <img
-        :src="`${data.image}`"
+        :src="`${image}`"
         class="sliderItem__home"
         alt="Taneem Products"
-        style="width: 100%"
-        @dblclick="openNewTab(data.image)"
+        style="width: 100%; height: 100%"
+        @dblclick="openNewTab(image)"
       >
     </nuxt-link>
   </transition>
@@ -29,15 +31,18 @@ export default {
     currIndex: { type: Number, default: 0 },
     dataId: { type: Number, default: 0 }
   },
-  mounted() {},
+  mounted() {
+    this.windowWidth = window.innerWidth
+  },
   computed: {
-    windowWidth() {
-      return this.$store.getters.windowWidth;
+    image() {
+      const url = this.windowWidth < 720 ? this.data.image_responsive[0] : this.data.image
+      return url
     }
   },
   data() {
     return {
-      heightImage: 0
+      windowWidth: 1366
     };
   },
   methods: {
