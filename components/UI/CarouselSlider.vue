@@ -1,5 +1,8 @@
 <template>
-  <transition name="fadeCarousel" mode="out-in">
+  <transition
+    name="fadeCarousel"
+    mode="out-in"
+  >
     <img
       v-if="type === 'product'"
       v-show="currIndex === dataId"
@@ -9,7 +12,10 @@
       style="width: 100%"
       @dblclick="openNewTab(data.image)"
     >
-    <nuxt-link v-else v-show="currIndex === dataId" :to="data.link"
+    <nuxt-link
+      v-else
+      v-show="currIndex === dataId"
+      :to="data.link"
       style="display: block"
     >
       <img
@@ -31,26 +37,31 @@ export default {
     currIndex: { type: Number, default: 0 },
     dataId: { type: Number, default: 0 }
   },
-  mounted() {
+  beforeMount () {
     this.windowWidth = window.innerWidth
+    this.image = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    window.addEventListener('resize', (event) => {
+      this.windowWidth = window.innerWidth
+      this.image = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    }, true)
   },
   computed: {
-    image() {
-      const url = this.windowWidth < 720 ? this.data.image_responsive[0] : this.data.image
-      return url
-    }
+    // image () {
+    //   const url = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    //   return url
+    // }
   },
-  data() {
+  data () {
     return {
-      windowWidth: 1366
+      windowWidth: null
     };
   },
   methods: {
-    openNewTab(value) {
+    openNewTab (value) {
       const win = window.open(value, "_blank");
       win.focus();
     },
-    addHash() {
+    addHash () {
       this.$router.push(this.$route.path + "#carousel");
     }
   }

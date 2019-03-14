@@ -1,10 +1,14 @@
 <template>
-  <div class="carousel"
+  <div
+    class="carousel"
     :style="{
       paddingTop: sliderHeight
     }"
   >
-    <Carousel :data="data" type="home"/>
+    <Carousel
+      :data="data"
+      type="home"
+    />
   </div>
 </template>
 
@@ -21,18 +25,29 @@ export default {
   components: {
     Carousel
   },
-  mounted() {
-    this.windowWidth = window.innerWidth
-  },
-  computed: {
-    sliderHeight() {
-      const height = `${this.windowWidth < 720 ? 100 : 41.66}%`
-      return height
+  created () {
+    if (process.client) {
+      this.windowWidth = window.innerWidth
+      this.sliderHeight = `${this.windowWidth < 720 ? 100 : 41.66}%`
+      window.addEventListener('resize', (event) => {
+        this.windowWidth = window.innerWidth
+        this.sliderHeight = `${this.windowWidth < 720 ? 100 : 41.66}%`
+      }, true)
     }
   },
-  data() {
+  beforeMount () {
+
+  },
+  // computed: {
+  //   sliderHeight () {
+  //     console.log('called')
+  //     return height
+  //   }
+  // },
+  data () {
     return {
       windowWidth: 1366,
+      sliderHeight: 0,
     };
   },
 };
