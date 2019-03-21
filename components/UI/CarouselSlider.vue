@@ -1,21 +1,29 @@
 <template>
-  <transition name="fadeCarousel" mode="out-in">
+  <transition
+    name="fadeCarousel"
+    mode="out-in"
+  >
     <img
       v-if="type === 'product'"
       v-show="currIndex === dataId"
       :src="`${data}`"
       class="sliderItem__imageProduk"
       alt="Taneem Products"
-      style="width: 100%;"
+      style="width: 100%"
       @dblclick="openNewTab(data.image)"
     >
-    <nuxt-link v-else v-show="currIndex === dataId" :to="data.link">
+    <nuxt-link
+      v-else
+      v-show="currIndex === dataId"
+      :to="data.link"
+      style="display: block"
+    >
       <img
-        :src="`${data.image}`"
+        :src="`${image}`"
         class="sliderItem__home"
         alt="Taneem Products"
-        style="width: 100%"
-        @dblclick="openNewTab(data.image)"
+        style="width: 100%; height: 100%"
+        @dblclick="openNewTab(image)"
       >
     </nuxt-link>
   </transition>
@@ -29,23 +37,31 @@ export default {
     currIndex: { type: Number, default: 0 },
     dataId: { type: Number, default: 0 }
   },
-  mounted() {},
-  computed: {
-    windowWidth() {
-      return this.$store.getters.windowWidth;
-    }
+  beforeMount () {
+    this.windowWidth = window.innerWidth
+    this.image = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    window.addEventListener('resize', (event) => {
+      this.windowWidth = window.innerWidth
+      this.image = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    }, true)
   },
-  data() {
+  computed: {
+    // image () {
+    //   const url = this.windowWidth < 720 ? this.data.image_responsive : this.data.image
+    //   return url
+    // }
+  },
+  data () {
     return {
-      heightImage: 0
+      windowWidth: null
     };
   },
   methods: {
-    openNewTab(value) {
+    openNewTab (value) {
       const win = window.open(value, "_blank");
       win.focus();
     },
-    addHash() {
+    addHash () {
       this.$router.push(this.$route.path + "#carousel");
     }
   }

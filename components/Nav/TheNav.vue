@@ -414,6 +414,7 @@
           :to="link.to"
           class="menu"
           aria-label="navigation"
+          :exact="link.exact"
         >{{link.name}}</nuxt-link>
       </div>
     </div>
@@ -429,7 +430,8 @@ export default {
       links: [
         {
           name: "Beranda",
-          to: "/"
+          to: "/",
+          exact: true
         },
         {
           name: "Produk",
