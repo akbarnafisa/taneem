@@ -29,6 +29,7 @@ import ProductSlider from "@/components/UI/ProductSlider";
 import Breadcrumbs from "@/components/UI/Breadcrumbs";
 import ProductDetails from "@/components/Sections/Produk/ProductDetails";
 import { ContentService } from '~/utils/api.service'
+import { async } from 'q';
 
 export default {
   components: {
@@ -37,13 +38,13 @@ export default {
     ProductDetails
   },
   async asyncData ({ app, store, route }) {
+    let product;
     if (store.state.products.listCategory === null) {
-      await store.dispatch("products/FETCH_CATEGORY");
+      await store.dispatch("products/FETCH_CATEGORY")
     }
-    const self = this
     const id = route.params.id;
-    const product = store.getters["products/GET_PRODUCT"](id)
-    const variation = await new Promise((resolve, reject) => {
+    product = store.getters["products/GET_PRODUCT"](id)
+    await new Promise((resolve, reject) => {
       ContentService.get('variasi', {
         produk_id: product._id
       })
@@ -67,7 +68,6 @@ export default {
           app.router.push('/')
         })
     })
-
     return {
       product,
     };
@@ -78,6 +78,7 @@ export default {
   computed: {
     Products () {
       const products = this.$store.state.products.allProducts;
+      console.log
       return this.product.nextData
         .map(v => {
           if (products[v]) {
