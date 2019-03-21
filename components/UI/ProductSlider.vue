@@ -2,27 +2,43 @@
   <div class="wrapper py-5 py-md-7">
     <div class="flex-items justify-content-between">
       <h5 class="underline-header h4-sm">{{header}}</h5>
-      <nuxt-link v-if="linkToAllProduct" class="flex-items" to="/produk">Selengkapnya
-        <arrow class="ml-1" color="#D31212" width="12px" height="12px" direction="right"/>
+      <nuxt-link
+        v-if="linkToAllProduct"
+        class="flex-items"
+        to="/produk"
+      >Selengkapnya
+        <arrow
+          class="ml-1"
+          color="#D31212"
+          width="12px"
+          height="12px"
+          direction="right"
+        />
       </nuxt-link>
     </div>
     <div v-swiper:mySwiper="swiperOption">
       <div class="swiper-wrapper">
         <nuxt-link
-          :to="`/produk/taneem-${product.name}`"
+          :to="`/produk/${product.link}`"
           class="swiper-slide"
           v-for="(product, index) in data"
           :key="product.name + index"
         >
           <div class="product__image-wrapper">
-            <img class="product__image" :src="product.image">
+            <img
+              class="product__image"
+              :src="product.image"
+            >
             <!-- <div v-if="product.new !== undefined || product.new " class="product__new">
               <span>Baru</span>
             </div>-->
           </div>
-          <div class="product__name">Tane'em - {{product.name}}</div>
+          <div class="product__name">{{product.name}}</div>
           <div class="product__price">Rp. {{(product.price).toLocaleString('id') }}</div>
-          <div v-if="product.fromDiscount > 0" class="product__discount">
+          <div
+            v-if="product.fromDiscount > 0"
+            class="product__discount"
+          >
             Rp. {{(product.fromDiscount).toLocaleString('id') }}
             <!-- <span
             class="product__discount__percent"
@@ -54,7 +70,7 @@ export default {
   components: {
     arrow
   },
-  data() {
+  data () {
     return {
       swiperOption: {
         slidesPerView: "auto",
@@ -63,7 +79,7 @@ export default {
     };
   },
   methods: {
-    countDiscount(discount, price) {
+    countDiscount (discount, price) {
       return Math.floor((1 - price / discount) * 100);
     }
   }
