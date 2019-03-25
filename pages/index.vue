@@ -9,14 +9,14 @@
           v-if="SelectionProduct"
           class="section"
           type="page-home"
-          header="Produk Pilihan"
+          :header="reverseObject['5c53ddf3151b4805957a69b7']"
           :data="SelectionProduct"
         />
         <produk-list
           v-if="BestSellerProduct"
           class="section"
           type="page-home"
-          header="Best Seller"
+          :header="reverseObject['5c53ddfc151b4805957a69b8']"
           :data="BestSellerProduct"
         />
       </section>
@@ -49,11 +49,21 @@ export default {
       return this.$store.state.home.sliders;
     },
     SelectionProduct () {
-      return this.$store.state.products.category["produk-pilihan"] && this.$store.state.products.category["produk-pilihan"].slice(0, 8);
+      const key = this.reverseObject['5c53ddf3151b4805957a69b7']
+      return this.$store.state.products.category[key] && this.$store.state.products.category[key].slice(0, 8);
     },
     BestSellerProduct () {
-      return this.$store.state.products.category["produk-terbaru"] && this.$store.state.products.category["produk-terbaru"].slice(0, 8);
-    }
+      const key = this.reverseObject['5c53ddfc151b4805957a69b8']
+      return this.$store.state.products.category[key] && this.$store.state.products.category[key].slice(0, 8);
+    },
+    reverseObject () {
+      const ret = {};
+      const obj = this.$store.state.products.listCategory
+      Object.keys(obj).forEach((key) => {
+        ret[obj[key]] = key;
+      });
+      return ret;
+    },
   }
 };
 </script>

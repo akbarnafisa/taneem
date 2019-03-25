@@ -32,8 +32,9 @@
         >
           <div
             v-show="tabActive === index"
-            class="information__content"
-          >{{list.content}}</div>
+            class="information__content content"
+            v-html="list.content"
+          />
         </transition>
       </div>
     </div>

@@ -50,6 +50,7 @@ export default {
       })
         .then(res => {
           let data = {}
+          console.log(res.data.data)
           res.data.data.map(val => {
             const key = `${val.color}${val.size}`.toLowerCase().replace(/ /g, "")
             data = {
